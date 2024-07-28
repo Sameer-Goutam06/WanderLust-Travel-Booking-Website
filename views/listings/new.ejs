@@ -1,27 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WanderLust-new</title>
-</head>
+<%= layout("layouts/boilerplate.ejs") %>
+<head><title>WanderLust-new</title></head>
 <body>
-    <h1>Create new Stay</h1>
-    <br>
-    <form action="/listings/new" method="post">
-        <input type="text" name="listing[title]" placeholder="enter title" required>
-        <br><br>
-        <textarea name="listing[description]" placeholder="enter description" required></textarea>
-        <br><br>
-        <input type="url" name="listing[image[url]]" placeholder="enter image url" required>
-        <br><br>
-        <input type="number" name="listing[price]" placeholder="enter price in ₹" required>
-        <br><br>
-        <input type="text" name="listing[location]" placeholder="enter location" required>
-        <br><br>
-        <input type="text" name="listing[country]" placeholder="enter country" required>
-        <br><br>
-        <button>Add</button>
+    <h1 class="text-center my-4">Create New Stay</h1>
+<div class="container">
+    <form action="/listings/new" method="post" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" id="title" name="listing[title]" class="form-control" placeholder="Enter title" required value="">
+            <div class="invalid-feedback">
+                Please provide a title.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="description" name="listing[description]" class="form-control" placeholder="Enter description" required></textarea>
+            <div class="invalid-feedback">
+                Please provide a description.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="image-url" class="form-label">Image URL</label>
+            <input type="url" id="image-url" name="listing[image[url]]" class="form-control" placeholder="Enter image URL" required>
+            <div class="invalid-feedback">
+                Please provide a valid URL.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label">Price (₹)</label>
+            <input type="number" id="price" name="listing[price]" class="form-control" placeholder="Enter price in ₹" required>
+            <div class="invalid-feedback">
+                Please provide a price.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" id="location" name="listing[location]" class="form-control" placeholder="Enter location" required>
+            <div class="invalid-feedback">
+                Please provide a location.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="country" class="form-label">Country</label>
+            <input type="text" id="country" name="listing[country]" class="form-control" placeholder="Enter country" required>
+            <div class="invalid-feedback">
+                Please provide a country.
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="background-color: rgb(29, 28, 28); border: none;">Add</button>
     </form>
+</div>
+
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+
 </body>
-</html>

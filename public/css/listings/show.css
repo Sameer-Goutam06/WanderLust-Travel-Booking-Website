@@ -1,0 +1,51 @@
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.destination-header {
+    text-align: center;
+}
+
+.destination-image {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.destination-details {
+    list-style-type: none;
+    padding: 0;
+}
+
+.destination-details li {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.buttons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+    color: white;
+}
+
+.edit
+{
+    background-color:rgb(29, 28, 28);
+}
+
+.delete
+{
+    background-color: rgb(252, 37, 37);
+}

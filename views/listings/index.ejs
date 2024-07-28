@@ -1,10 +1,32 @@
 <% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/css/listings/index.css">
 <body>
-    <h1>All Listings</h1>
-    <button onclick="window.location.href='/listings/new'">Create new Stay</button>
-    <ul>
-        <% for( let item of l) { %>
-            <li><a href="/listings/<%= item._id %>"><%= item.title %></a></li>
+    <h1 class="list">All Listings</h1>
+    <button class="create" onclick="window.location.href='/listings/new'">Create new Stay</button>
+    <br>
+    <br>
+    <div class="cards-container">
+        <% l.forEach((item, index) => { %>
+            <% if (index % 4 === 0) { %>
+                <div class="row">
+            <% } %>
+                    <div class="card" onclick="window.location.href='/listings/<%=item._id%>'">
+                        <img src="<%=item.image.url%>" class="card-img-top" alt="destination">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= item.title %></h5>
+                            <p class="card-text">
+                                <!-- <%= item.description %> -->
+                                <!-- <br> -->
+                                ₹<%= item.price.toLocaleString("en-IN") %>/night
+                            </p>
+                        </div>
+                    </div>
+            <% if (index % 4 === 3) { %>
+                </div>
+            <% } %>
+        <% }); %>
+        <% if (l.length % 4 !== 0) { %>
+            </div>
         <% } %>
-    </ul>
+    </div>    
 </body>

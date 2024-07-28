@@ -1,27 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WanderLust-new</title>
-</head>
+<%= layout("layouts/boilerplate") %>
+<link rel="stylesheet" href="/css/listings/edit.css">
 <body>
-    <h1>Edit Data about Stay <%= result.title %></h1>
-    <br>
-    <form method="post" action="/listings/<%= result._id %>/edit?_method=PUT">
-        <input type="text" name="listing[title]" placeholder="enter title" value="<%= result.title %>" required>
-        <br><br>
-        <textarea name="listing[description]" placeholder="enter description" required><%= result.description %></textarea>
-        <br><br>
-        <input type="url" name="listing[image[url]]" placeholder="enter image url" value="<%= result.image.url %>" required>
-        <br><br>
-        <input type="number" name="listing[price]" placeholder="enter price in ₹" value="<%= result.price %>" required>
-        <br><br>
-        <input type="text" name="listing[location]" placeholder="enter location" value="<%= result.location %>" required>
-        <br><br>
-        <input type="text" name="listing[country]" placeholder="enter country" value="<%= result.country %>" required>
-        <br><br>
-        <button>Add</button>
-    </form>
+    <div class="form-container">
+        <h1>Edit Data about Stay <%= result.title %></h1>
+        <form method="post" action="/listings/<%= result._id %>/edit?_method=PUT">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="listing[title]" placeholder="Enter title" value="<%= result.title %>" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="listing[description]" placeholder="Enter description" required><%= result.description %></textarea>
+            </div>
+            <div class="form-group">
+                <label for="image-url">Image URL</label>
+                <input type="url" id="image-url" name="listing[image[url]]" placeholder="Enter image URL" value="<%= result.image.url %>" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price in ₹</label>
+                <input type="number" id="price" name="listing[price]" placeholder="Enter price in ₹" value="<%= result.price %>" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="listing[location]" placeholder="Enter location" value="<%= result.location %>" required>
+            </div>
+            <div class="form-group">
+                <label for="country">Country</label>
+                <input type="text" id="country" name="listing[country]" placeholder="Enter country" value="<%= result.country %>" required>
+            </div>
+            <button type="submit">Update</button>
+        </form>
+    </div>
 </body>
-</html>
