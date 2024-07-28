@@ -20,7 +20,10 @@ footer .f-info-socials {
     gap: 1rem;
     width: 100%;
 }
-
+footer .f-info-socials h5
+{
+    cursor: pointer;
+}
 footer .brand {
     text-align: center;
     width: 100%;
