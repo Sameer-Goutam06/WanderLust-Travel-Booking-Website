@@ -1,0 +1,10 @@
+<% layout('layouts/boilerplate') %>
+<body>
+    <h1>All Listings</h1>
+    <button onclick="window.location.href='/listings/new'">Create new Stay</button>
+    <ul>
+        <% for( let item of l) { %>
+            <li><a href="/listings/<%= item._id %>"><%= item.title %></a></li>
+        <% } %>
+    </ul>
+</body>

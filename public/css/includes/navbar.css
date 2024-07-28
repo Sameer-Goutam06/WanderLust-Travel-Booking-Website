@@ -1,0 +1,26 @@
+.navbar
+{
+    height: 5rem;
+    background-color: #fff !important;
+    border-bottom: 2px solid black;
+}
+.logo
+{
+    display: flex;
+    height: 100%;
+    width: 25%;
+    align-items:center;
+    justify-content: space-evenly;
+    gap:1vmin;
+}
+.logo h2
+{
+    color: red;
+    font-weight: 150;
+}
+.logo h1
+{
+    font-size: 4vmin;
+    font-weight: 550;
+    font-family: Raleway;
+}

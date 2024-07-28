@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WanderLust-new</title>
+</head>
+<body>
+    <h1>Edit Data about Stay <%= result.title %></h1>
+    <br>
+    <form method="post" action="/listings/<%= result._id %>/edit?_method=PUT">
+        <input type="text" name="listing[title]" placeholder="enter title" value="<%= result.title %>" required>
+        <br><br>
+        <textarea name="listing[description]" placeholder="enter description" required><%= result.description %></textarea>
+        <br><br>
+        <input type="url" name="listing[image[url]]" placeholder="enter image url" value="<%= result.image.url %>" required>
+        <br><br>
+        <input type="number" name="listing[price]" placeholder="enter price in ₹" value="<%= result.price %>" required>
+        <br><br>
+        <input type="text" name="listing[location]" placeholder="enter location" value="<%= result.location %>" required>
+        <br><br>
+        <input type="text" name="listing[country]" placeholder="enter country" value="<%= result.country %>" required>
+        <br><br>
+        <button>Add</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WanderLust:<%= result.title %></title>
+</head>
+<body>
+    <h1>Listing details</h1>
+    <ul>
+        <li><%= result.title %></li>
+        <li><%= result.description %></li>
+        <li>₹<%= result.price.toLocaleString("en-IN") %></li>
+        <li><%= result.location %></li>
+        <li><%= result.country %></li>
+    </ul>
+    <button onclick="window.location.href='/listings/<%= result._id %>/edit'">Edit data</button>
+    <br><br>
+    <form method="post" action="/listings/<%= result._id %>/delete?_method=DELETE">
+        <button type="submit">Delete data</button>
+    </form>   
+</body>
+</html>
