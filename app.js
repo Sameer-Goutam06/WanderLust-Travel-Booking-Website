@@ -43,7 +43,7 @@ app.get('/listings', async (req, res) => {
         const l = await Listing.find();
         res.render('listings/index.ejs', { l });
     } catch (e) {
-        res.send(e);
+        next(e);
     }
 });
 
@@ -61,7 +61,7 @@ app.post('/listings/new', async (req, res) => {
         res.redirect('/listings');
     } catch (e) {
         console.log(e);
-        res.send('Failed to create new listing');
+        next(e);
     }
 });
 
@@ -73,7 +73,7 @@ app.get('/listings/:id', async (req, res) => {
         res.render('listings/show', { result });
     } catch (e) {
         console.log(e);
-        res.send('Failed to retrieve listing details');
+        next(e);
     }
 });
 
@@ -85,7 +85,7 @@ app.get('/listings/:id/edit', async (req, res) => {
         res.render('listings/edit', { result });
     } catch (e) {
         console.log(e);
-        res.send('Failed to load edit form');
+        next(e);
     }
 });
 
@@ -94,10 +94,8 @@ app.put('/listings/:id/edit', async (req, res) => {
     try {
         let { id } = req.params;
         let updateData = req.body.listing;
-
         // Ensure the price is a number
         updateData.price = Number(updateData.price);
-
         // Ensure the image object is present
         if (!updateData.image) {
             updateData.image = {
@@ -105,13 +103,12 @@ app.put('/listings/:id/edit', async (req, res) => {
                 url: 'https://default-image-url.jpg' // Default URL
             };
         }
-
         const updatedListing = await Listing.findByIdAndUpdate(id, updateData, { new: true });
         console.log('Updation successful:', updatedListing);
         res.redirect('/listings');
     } catch (e) {
         console.log('Updation unsuccessful:', e);
-        res.send('Failed to update listing');
+        next(e);
     }
 });
 
@@ -119,19 +116,27 @@ app.put('/listings/:id/edit', async (req, res) => {
 
 // DELETE method to delete a listing
 app.delete('/listings/:id/delete', async (req, res) => {
-    try {
+    try 
+    {
         let { id } = req.params;
         await Listing.findByIdAndDelete(id);
         console.log('Deletion successful');
         res.redirect('/listings');
     } catch (e) {
         console.log('Deletion unsuccessful: ' + e);
-        res.send('Failed to delete listing');
+        next(e);
     }
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).send('Something went wrong!');
+    const error = 
+    {
+        status: err.status || 500,
+        message: err.message || 'Internal Server Error',
+        firstLine: err.stack.split('\n')[1] || 'No stack trace available'
+    };
+    res.status(error.status);
+    res.render('listings/error', { error });
 });
