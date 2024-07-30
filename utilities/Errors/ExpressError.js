@@ -1,0 +1,7 @@
+class ExpressError
+{
+    constructor()
+    {
+        
+    }
+}

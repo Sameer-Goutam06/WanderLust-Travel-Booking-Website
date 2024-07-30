@@ -6,7 +6,7 @@
         <div class="destination-header">
             <h1><%= result.title %></h1>
         </div>
-        <img src="<%= result.image.url %>" alt="Destination Image" class="destination-image">
+        <img src="<%= result.image.url %>" alt="Destination Image" class="destination-image" onerror='this.src="https://cff2.earth.com/uploads/2017/09/31200356/Nature-imagery-has-a-calming-effects-on-prisoners-850x500.jpg"'>
         <ul class="destination-details">
             <li><%= result.description %></li>
             <li><p style="font-weight: 600;">Price</p><p>₹<%= result.price.toLocaleString("en-IN") %></p></li>

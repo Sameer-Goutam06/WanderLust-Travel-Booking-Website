@@ -34,13 +34,17 @@ app.listen(port, () => {
 
 // Root route
 app.get('/', (req, res) => {
-    res.send('Hi, I am root');
+    res.redirect("/listings");
 });
 
 // Listings route - list of all available destinations
 app.get('/listings', async (req, res) => {
-    const l = await Listing.find();
-    res.render('listings/index', { l });
+    try {
+        const l = await Listing.find();
+        res.render('listings/index.ejs', { l });
+    } catch (e) {
+        res.send(e);
+    }
 });
 
 // Create a new stay destination
@@ -50,42 +54,84 @@ app.get('/listings/new', (req, res) => {
 
 // Acquire the details of stay place
 app.post('/listings/new', async (req, res) => {
-    let newlisting = new Listing(req.body.listing);
-    await newlisting
-        .save()
-        .then(() => console.log('Inserted successfully'))
-        .catch((e) => console.log(e));
-    res.redirect('/listings');
+    try {
+        let newlisting = new Listing(req.body.listing);
+        await newlisting.save();
+        console.log('Inserted successfully');
+        res.redirect('/listings');
+    } catch (e) {
+        console.log(e);
+        res.send('Failed to create new listing');
+    }
 });
 
 // See the details of a destination in detail using object id and anchor tags
 app.get('/listings/:id', async (req, res) => {
-    let { id } = req.params;
-    const result = await Listing.findById(id);
-    res.render('listings/show', { result });
+    try {
+        let { id } = req.params;
+        const result = await Listing.findById(id);
+        res.render('listings/show', { result });
+    } catch (e) {
+        console.log(e);
+        res.send('Failed to retrieve listing details');
+    }
 });
 
 // Editing route for details of a destination
 app.get('/listings/:id/edit', async (req, res) => {
-    let { id } = req.params;
-    const result = await Listing.findById(id);
-    res.render('listings/edit', { result });
+    try {
+        let { id } = req.params;
+        const result = await Listing.findById(id);
+        res.render('listings/edit', { result });
+    } catch (e) {
+        console.log(e);
+        res.send('Failed to load edit form');
+    }
 });
 
 // PUT method to acquire the details obtained from the editing route
-app.put('/listings/:id', async (req, res) => {
-    let { id } = req.params;
-    await Listing.findByIdAndUpdate(id, req.body.listing, { new: true })
-        .then(() => console.log('Updation successful'))
-        .catch((e) => console.log('Updation unsuccessful: ' + e));
-    res.redirect('/listings');
+app.put('/listings/:id/edit', async (req, res) => {
+    try {
+        let { id } = req.params;
+        let updateData = req.body.listing;
+
+        // Ensure the price is a number
+        updateData.price = Number(updateData.price);
+
+        // Ensure the image object is present
+        if (!updateData.image) {
+            updateData.image = {
+                filename: 'default-image.jpg', // Or any default value
+                url: 'https://default-image-url.jpg' // Default URL
+            };
+        }
+
+        const updatedListing = await Listing.findByIdAndUpdate(id, updateData, { new: true });
+        console.log('Updation successful:', updatedListing);
+        res.redirect('/listings');
+    } catch (e) {
+        console.log('Updation unsuccessful:', e);
+        res.send('Failed to update listing');
+    }
 });
 
+
+
 // DELETE method to delete a listing
-app.delete('/listings/:id', async (req, res) => {
-    let { id } = req.params;
-    await Listing.findByIdAndDelete(id)
-        .then(() => console.log('Deletion successful'))
-        .catch((e) => console.log('Deletion unsuccessful: ' + e));
-    res.redirect('/listings');
+app.delete('/listings/:id/delete', async (req, res) => {
+    try {
+        let { id } = req.params;
+        await Listing.findByIdAndDelete(id);
+        console.log('Deletion successful');
+        res.redirect('/listings');
+    } catch (e) {
+        console.log('Deletion unsuccessful: ' + e);
+        res.send('Failed to delete listing');
+    }
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something went wrong!');
 });

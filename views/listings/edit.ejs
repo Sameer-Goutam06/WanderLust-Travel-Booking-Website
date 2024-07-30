@@ -3,7 +3,7 @@
 <body>
     <div class="form-container">
         <h1>Edit Data about Stay <%= result.title %></h1>
-        <form method="post" action="/listings/<%= result._id %>/edit?_method=PUT">
+        <form method="post" action="/listings/<%= result._id %>/edit?_method=PUT" novalidate class="needs-validation">
             <div class="form-group">
                 <label for="title">Title</label>
                 <input type="text" id="title" name="listing[title]" placeholder="Enter title" value="<%= result.title %>" required>
@@ -31,4 +31,5 @@
             <button type="submit">Update</button>
         </form>
     </div>
+    <script src="/js/FormValidation.js"></script>
 </body>
