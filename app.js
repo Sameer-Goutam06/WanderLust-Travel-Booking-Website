@@ -15,19 +15,15 @@ app.use(methodOverride('_method'));
 app.engine('ejs', ejs_mate);
 
 // Mongoose connection
-let main = async () => {
-    await mongoose.connect('mongodb://127.0.0.1:27017/WanderLust');
-};
-
-main()
+mongoose.connect('mongodb://127.0.0.1:27017/WanderLust')
     .then(() => console.log('Connected to MongoDB'))
     .catch((err) => console.log(err));
 
 // Require model created in models folder
-const Listing = require('./models/listing.js');
+const Listing = require('./models/listing');
 
 // Listening to port number
-let port = 8080;
+const port = 8080;
 app.listen(port, () => {
     console.log(`Server is running on: http://localhost:${port}`);
 });
@@ -38,12 +34,12 @@ app.get('/', (req, res) => {
 });
 
 // Listings route - list of all available destinations
-app.get('/listings', async (req, res) => {
+app.get('/listings', async (req, res, next) => {
     try {
-        const l = await Listing.find();
-        res.render('listings/index.ejs', { l });
-    } catch (e) {
-        next(e);
+        const listings = await Listing.find();
+        res.render('listings/index', { listings });
+    } catch (err) {
+        next(err);
     }
 });
 
@@ -53,47 +49,47 @@ app.get('/listings/new', (req, res) => {
 });
 
 // Acquire the details of stay place
-app.post('/listings/new', async (req, res) => {
+app.post('/listings/new', async (req, res, next) => {
     try {
-        let newlisting = new Listing(req.body.listing);
-        await newlisting.save();
+        const newListing = new Listing(req.body.listing);
+        await newListing.save();
         console.log('Inserted successfully');
         res.redirect('/listings');
-    } catch (e) {
-        console.log(e);
-        next(e);
+    } catch (err) {
+        console.log(err);
+        next(err);
     }
 });
 
 // See the details of a destination in detail using object id and anchor tags
-app.get('/listings/:id', async (req, res) => {
+app.get('/listings/:id', async (req, res, next) => {
     try {
-        let { id } = req.params;
+        const { id } = req.params;
         const result = await Listing.findById(id);
         res.render('listings/show', { result });
-    } catch (e) {
-        console.log(e);
-        next(e);
+    } catch (err) {
+        console.log(err);
+        next(err);
     }
 });
 
 // Editing route for details of a destination
-app.get('/listings/:id/edit', async (req, res) => {
+app.get('/listings/:id/edit', async (req, res, next) => {
     try {
-        let { id } = req.params;
+        const { id } = req.params;
         const result = await Listing.findById(id);
         res.render('listings/edit', { result });
-    } catch (e) {
-        console.log(e);
-        next(e);
+    } catch (err) {
+        console.log(err);
+        next(err);
     }
 });
 
 // PUT method to acquire the details obtained from the editing route
-app.put('/listings/:id/edit', async (req, res) => {
+app.put('/listings/:id/edit', async (req, res, next) => {
     try {
-        let { id } = req.params;
-        let updateData = req.body.listing;
+        const { id } = req.params;
+        const updateData = req.body.listing;
         // Ensure the price is a number
         updateData.price = Number(updateData.price);
         // Ensure the image object is present
@@ -106,33 +102,29 @@ app.put('/listings/:id/edit', async (req, res) => {
         const updatedListing = await Listing.findByIdAndUpdate(id, updateData, { new: true });
         console.log('Updation successful:', updatedListing);
         res.redirect('/listings');
-    } catch (e) {
-        console.log('Updation unsuccessful:', e);
-        next(e);
+    } catch (err) {
+        console.log('Updation unsuccessful:', err);
+        next(err);
     }
 });
 
-
-
 // DELETE method to delete a listing
-app.delete('/listings/:id/delete', async (req, res) => {
-    try 
-    {
-        let { id } = req.params;
+app.delete('/listings/:id/delete', async (req, res, next) => {
+    try {
+        const { id } = req.params;
         await Listing.findByIdAndDelete(id);
         console.log('Deletion successful');
         res.redirect('/listings');
-    } catch (e) {
-        console.log('Deletion unsuccessful: ' + e);
-        next(e);
+    } catch (err) {
+        console.log('Deletion unsuccessful:', err);
+        next(err);
     }
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    const error = 
-    {
+    const error = {
         status: err.status || 500,
         message: err.message || 'Internal Server Error',
         firstLine: err.stack.split('\n')[1] || 'No stack trace available'
