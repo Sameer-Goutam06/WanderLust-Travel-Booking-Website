@@ -1,3 +1,4 @@
+/* General List and Create Styles */
 .list {
     height: fit-content;
     font-size: 2rem;
@@ -15,6 +16,7 @@
     margin-bottom: 2rem;
 }
 
+/* Cards Container Styles */
 .cards-container {
     display: flex;
     flex-direction: column;
@@ -45,19 +47,26 @@
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        background-color: #fff;
-        transition: transform 0.3s, box-shadow 0.3s;
+        background-color: transparent;
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
         cursor: pointer;
         gap: 1rem;
         padding: 0;
         border-radius: 15px;
+        border: none;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Hover effects */
     }
 
     .card-img-top {
         width: 100%;
         height: 15rem; /* Fixed height for images */
-        object-fit: cover;
+        object-fit: cover !important;
         object-position: center;
+        border-radius: 15px;
     }
 
     .card-body {
@@ -94,10 +103,12 @@
     .card {
         width: 100%;
         margin-bottom: 1.5rem;
+        border: none;
     }
 
     .card-img-top {
-        height: 15rem; /* Fixed height for images on mobile */
+        height: 15rem; 
+        border-radius: 15px; /* Fixed height for images on mobile */
     }
 
     .card-body {

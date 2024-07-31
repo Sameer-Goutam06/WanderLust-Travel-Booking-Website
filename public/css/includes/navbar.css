@@ -1,3 +1,4 @@
+/* Navbar General Styles */
 .navbar {
     background-color: white !important;
     height: 4rem;
@@ -44,6 +45,19 @@
     font-size: 1rem; /* Default font size for larger screens */
 }
 
+/* Collapsed Navbar Styles */
+.navbar-collapse.show {
+    background-color: #333; /* Light black background */
+    padding: 1rem; /* Add padding */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
+}
+
+.navbar-collapse.show .nav-link {
+    color: white !important; /* White text color */
+    margin: 0.5rem 0; /* Add margin for spacing */
+}
+
 /* Media Query for Large Screens */
 @media (min-width: 992px) {
     .navbar-nav .nav-link {
@@ -65,7 +79,7 @@
 /* Media Query for Mobile Screens */
 @media (max-width: 767px) {
     .navbar-collapse {
-        text-align: center; /* Center align links in mobile view */
+        text-align: left; /* Center align links in mobile view */
     }
 
     .navbar-nav {
@@ -78,5 +92,12 @@
 
     .logo h2 {
         font-size: 1.25rem; /* Adjust for mobile screens */
+    }
+
+    .navbar-collapse .show .nav-link {
+        display: block;
+        width: 100%;
+        text-align: left;
+        border-bottom: 2px light white;
     }
 }
