@@ -1,1 +1,1 @@
-installed express,ejs,mongoose,joi,ejs-mate,nodemon
+installed express,ejs,mongoose,joi,ejs-mate,nodemon,method-override
