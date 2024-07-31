@@ -7,18 +7,21 @@
             <div class="form-group">
                 <label for="title">Title</label>
                 <input type="text" id="title" name="listing[title]" placeholder="Enter title" value="<%= result.title %>" required>
+                <div class="invalid-feedback">Title must be less than 50 characters.</div>
             </div>
             <div class="form-group">
                 <label for="description">Description</label>
                 <textarea id="description" name="listing[description]" placeholder="Enter description" required><%= result.description %></textarea>
+                <div class="invalid-feedback">Description length should be in the range of 50-500 characters</div>
             </div>
             <div class="form-group">
                 <label for="image-url">Image URL</label>
-                <input type="url" id="image-url" name="listing[image[url]]" placeholder="Enter image URL" value="<%= result.image.url %>" required>
+                <input type="url" id="image-url" name="listing[image][url]" placeholder="Enter image URL" value="<%= result.image.url %>" required>
             </div>
             <div class="form-group">
                 <label for="price">Price in ₹</label>
                 <input type="number" id="price" name="listing[price]" placeholder="Enter price in ₹" value="<%= result.price %>" required>
+                <div class="invalid-feedback">Price must be greater than 500.</div>
             </div>
             <div class="form-group">
                 <label for="location">Location</label>

@@ -1,28 +1,82 @@
-.navbar
-{
+.navbar {
+    background-color: white !important;
     height: 4rem;
-    background-color: #fff !important;
-    border-bottom: 2px solid black;
 }
-.logo
-{
-    padding-top: 2%;
+
+.navbar-brand {
     display: flex;
-    height: 100%;
-    width: 25%;
-    align-items:center;
-    justify-content: space-evenly;
-    gap:1vmin;
+    align-items: center;
+    padding: 0.5rem; /* Add some padding around the brand */
 }
-.logo h2
-{
-    color: red;
-    font-weight: 150;
+
+.navbar-collapse {
+    justify-content: flex-end;
 }
-.logo h1
-{
-    padding-top: 5%;
-    font-size: 4vmin;
-    font-weight: 550;
+
+/* Logo Styling */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     font-family: Raleway;
+}
+
+.logo h2 {
+    margin: 0;
+    padding: 0;
+    color: red;
+    font-size: 1.5rem; /* Adjust size if needed */
+}
+
+.logo h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 1.5rem; /* Adjust for better scaling on smaller screens */
+}
+
+/* Navbar Toggler */
+.navbar-toggler {
+    border: none; /* Remove default border */
+}
+
+/* Navbar Links */
+.navbar-nav .nav-link {
+    font-size: 1rem; /* Default font size for larger screens */
+}
+
+/* Media Query for Large Screens */
+@media (min-width: 992px) {
+    .navbar-nav .nav-link {
+        font-size: 1rem; /* Keep font size consistent on larger screens */
+    }
+}
+
+/* Media Query for Tablet Screens */
+@media (max-width: 991px) {
+    .logo h1 {
+        font-size: 1rem; /* Adjust for tablet screens */
+    }
+
+    .logo h2 {
+        font-size: 1.25rem; /* Adjust for tablet screens */
+    }
+}
+
+/* Media Query for Mobile Screens */
+@media (max-width: 767px) {
+    .navbar-collapse {
+        text-align: center; /* Center align links in mobile view */
+    }
+
+    .navbar-nav {
+        margin-top: 1rem; /* Add some top margin for spacing */
+    }
+
+    .logo h1 {
+        font-size: 1rem; /* Adjust for mobile screens */
+    }
+
+    .logo h2 {
+        font-size: 1.25rem; /* Adjust for mobile screens */
+    }
 }

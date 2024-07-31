@@ -1,79 +1,106 @@
-.list
-{
-    height:fit-content;
+.list {
+    height: fit-content;
     font-size: 2rem;
     padding: 1rem 1.75rem;
 }
 
-.create
-{
-    margin:0rem 1.75rem;
+.create {
+    margin: 0rem 1.75rem;
     border: none;
     background-color: rgb(29, 28, 28);
     color: white;
-    height:fit-content;
+    height: fit-content;
     padding: 0.5rem 1rem;
     border-radius: 10px;
+    margin-bottom: 2rem;
 }
 
 .cards-container {
     display: flex;
     flex-direction: column;
     gap: 3rem;
-    padding: 0 2%;
+    padding: 0 1rem; /* Padding on mobile screens */
 }
 
-.row {
-    display: flex;
-    justify-content: space-evenly;
-    gap: 1.5rem;
+/* Media query for large screens */
+@media (min-width: 768px) {
+    .cards-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between; /* Adjust to space between cards */
+        padding: 0 2rem; /* Padding for larger screens */
+    }
+
+    .row {
+        display: flex;
+        flex-direction: row;
+        gap: 1.5rem;
+        width: 100%;
+        margin: 0; /* Remove margin for rows to align cards properly */
+    }
+
+    .card {
+        width: calc(25% - 1.5rem); /* Adjust width to fit 4 cards per row with gaps */
+        height: 21rem;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        background-color: #fff;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        gap: 1rem;
+        padding: 0;
+        border-radius: 15px;
+    }
+
+    .card-img-top {
+        width: 100%;
+        height: 15rem; /* Fixed height for images */
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .card-body {
+        height: 6rem; /* Adjust height to fit within the card body */
+        padding: 0.5rem;
+        padding-top: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding-bottom: 1rem;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        height: auto; /* Allow title to adjust height */
+    }
+
+    .card-text {
+        font-size: 1rem;
+        color: #333;
+        display: flex;
+        justify-content: flex-start;
+    }
 }
 
-.card {
-    width: 23%;
-    height: 21rem;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    background-color: #fff;
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-    gap: 1rem;
-    padding: 0;
-    border-radius: 15px;
-}
+/* Media query for mobile screens */
+@media (max-width: 767px) {
+    .row {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem; /* Space between rows on mobile */
+    }
 
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
+    .card {
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
 
-.card-img-top {
-    width: 100%;
-    height: 70%;
-    object-fit: cover;
-    object-position: center;
-}
+    .card-img-top {
+        height: 15rem; /* Fixed height for images on mobile */
+    }
 
-.card-body {
-    height: 30%;
-    padding:0.5rem;
-    padding-top: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding-bottom: 1rem;
-}
-
-.card-title {
-    font-size: 1.25rem;
-    height:60%;
-}
-
-.card-text {
-    height: 40%;
-    font-size: 1rem;
-    color: #333;
-    display: flex;
-    justify-content: flex-start;
+    .card-body {
+        height: auto; /* Adjust height for card body on mobile */
+    }
 }

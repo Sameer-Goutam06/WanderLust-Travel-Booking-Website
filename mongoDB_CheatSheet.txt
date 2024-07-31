@@ -1,0 +1,328 @@
+MongoDB Commands and Examples
+
+==================================
+MongoDB Basics
+==================================
+
+1. Connecting to MongoDB
+------------------------
+mongo
+- Connects to the MongoDB instance running on localhost with default port 27017.
+
+2. Show Databases
+-----------------
+show dbs
+- Lists all databases.
+
+3. Switch/Use Database
+----------------------
+use databaseName
+- Switches to the specified database. If it doesn't exist, MongoDB creates it when you first store data there.
+
+4. Show Collections
+-------------------
+show collections
+- Lists all collections in the current database.
+- We can create a collection directly by start using it
+==================================
+CRUD Operations
+==================================
+
+Create
+------
+1. Insert a Single Document
+---------------------------
+db.collectionName.insertOne({
+  key1: "value1",
+  key2: "value2",
+  ...
+})
+- Example:
+db.users.insertOne({ name: "John Doe", age: 30, status: "A" })
+
+2. Insert Multiple Documents
+----------------------------
+db.collectionName.insertMany([
+  { key1: "value1", key2: "value2", ... },
+  { key1: "value1", key2: "value2", ... },
+  ...
+])
+- Example:
+db.users.insertMany([
+  { name: "Jane Doe", age: 25, status: "B" },
+  { name: "Sam Smith", age: 22, status: "A" }
+])
+
+Read
+----
+1. Find All Documents
+---------------------
+db.collectionName.find()
+- Example:
+db.users.find()
+
+2. Find with a Query
+--------------------
+db.collectionName.find({ key: "value" })
+- Example:
+db.users.find({ status: "A" })
+
+3. Find with Projection
+-----------------------
+db.collectionName.find(
+  { key: "value" },
+  { field1: 1, field2: 1, _id: 0 }
+)
+- Example:
+db.users.find({ status: "A" }, { name: 1, age: 1, _id: 0 })
+
+4. Find One Document
+--------------------
+db.collectionName.findOne({ key: "value" })
+- Example:
+db.users.findOne({ name: "John Doe" })
+
+Update
+------
+1. Update a Single Document
+---------------------------
+db.collectionName.updateOne(
+  { key: "value" },
+  { $set: { keyToUpdate: "newValue" } }
+)
+- Example:
+db.users.updateOne(
+  { name: "John Doe" },
+  { $set: { age: 31 } }
+)
+
+2. Update Multiple Documents
+----------------------------
+db.collectionName.updateMany(
+  { key: "value" },
+  { $set: { keyToUpdate: "newValue" } }
+)
+db.collectionName.updateOne(<filters>,<update>,<options>);
+- Example:
+db.users.updateMany(
+  { status: "A" },
+  { $set: { status: "C" } }
+)
+
+3. Replace a Document
+---------------------
+db.collectionName.replaceOne(
+  { key: "value" },
+  { key1: "newValue1", key2: "newValue2", ... }
+)
+- Example:
+db.users.replaceOne(
+  { name: "John Doe" },
+  { name: "Johnathan Doe", age: 31, status: "A" }
+)
+
+Delete
+------
+1. Delete a Single Document
+---------------------------
+db.collectionName.deleteOne({ key: "value" })
+- Example:
+db.users.deleteOne({ name: "John Doe" })
+
+2. Delete Multiple Documents
+----------------------------
+db.collectionName.deleteMany({ key: "value" })
+- Example:
+db.users.deleteMany({ status: "C" })
+
+==================================
+Indexing
+==================================
+
+1. Create an Index
+------------------
+db.collectionName.createIndex({ key: 1 })
+- Example:
+db.users.createIndex({ name: 1 })
+
+2. Create a Unique Index
+------------------------
+db.collectionName.createIndex({ key: 1 }, { unique: true })
+- Example:
+db.users.createIndex({ email: 1 }, { unique: true })
+
+3. Drop an Index
+----------------
+db.collectionName.dropIndex({ key: 1 })
+- Example:
+db.users.dropIndex({ name: 1 })
+
+==================================
+Aggregation
+==================================
+
+1. Basic Aggregation Pipeline
+-----------------------------
+db.collectionName.aggregate([
+  { $match: { key: "value" } },
+  { $group: { _id: "$keyToGroupBy", total: { $sum: "$keyToSum" } } }
+])
+- Example:
+db.sales.aggregate([
+  { $match: { status: "A" } },
+  { $group: { _id: "$item", total: { $sum: "$quantity" } } }
+])
+
+==================================
+Backup and Restore
+==================================
+
+1. Backup a Database
+--------------------
+mongodump --db databaseName --out /path/to/backup/
+
+2. Restore a Database
+---------------------
+mongorestore --db databaseName /path/to/backup/databaseName
+
+==================================
+Miscellaneous
+==================================
+
+1. Get Collection Stats
+-----------------------
+db.collectionName.stats()
+- Example:
+db.users.stats()
+
+2. Drop a Collection
+--------------------
+db.collectionName.drop()
+- Example:
+db.users.drop()
+
+3. Drop a Database
+------------------
+db.dropDatabase()
+
+
+MongoDB Query Operators
+
+1. Comparison Operators
+$eq
+Description: Matches values that are equal to a specified value.
+Syntax: { field: { $eq: value } }
+Example: Find users with age 25.
+db.users.find({ age: { $eq: 25 } })
+
+$ne
+Description: Matches all values that are not equal to a specified value.
+Syntax: { field: { $ne: value } }
+Example: Find users not aged 25.
+db.users.find({ age: { $ne: 25 } })
+
+$gt
+Description: Matches values that are greater than a specified value.
+Syntax: { field: { $gt: value } }
+Example: Find users older than 25.
+db.users.find({ age: { $gt: 25 } })
+
+$gte
+Description: Matches values that are greater than or equal to a specified value.
+Syntax: { field: { $gte: value } }
+Example: Find users aged 25 or older.
+db.users.find({ age: { $gte: 25 } })
+
+$lt
+Description: Matches values that are less than a specified value.
+Syntax: { field: { $lt: value } }
+Example: Find users younger than 25.
+db.users.find({ age: { $lt: 25 } })
+
+$lte
+Description: Matches values that are less than or equal to a specified value.
+Syntax: { field: { $lte: value } }
+Example: Find users aged 25 or younger.
+db.users.find({ age: { $lte: 25 } })
+
+$in
+Description: Matches any of the values specified in an array.
+Syntax: { field: { $in: [value1, value2, ...] } }
+Example: Find users aged 25 or 30.
+db.users.find({ age: { $in: [25, 30] } })
+
+$nin
+Description: Matches none of the values specified in an array.
+Syntax: { field: { $nin: [value1, value2, ...] } }
+Example: Find users not aged 25 or 30.
+db.users.find({ age: { $nin: [25, 30] } })
+
+2. Logical Operators
+$and
+Description: Joins query clauses with a logical AND and returns all documents that match the conditions of both clauses.
+Syntax: { $and: [ { expression1 }, { expression2 }, ... ] }
+Example: Find users who are aged 25 and have status "A".
+db.users.find({ $and: [ { age: 25 }, { status: "A" } ] })
+
+$or
+Description: Joins query clauses with a logical OR and returns all documents that match the conditions of either clause.
+Syntax: { $or: [ { expression1 }, { expression2 }, ... ] }
+Example: Find users who are aged 25 or have status "A".
+db.users.find({ $or: [ { age: 25 }, { status: "A" } ] })
+
+$not
+Description: Inverts the effect of a query expression and returns documents that do not match the query expression.
+Syntax: { field: { $not: { operator: value } } }
+Example: Find users who do not have status "A".
+db.users.find({ status: { $not: { $eq: "A" } } })
+
+$nor
+Description: Joins query clauses with a logical NOR and returns all documents that fail to match both clauses.
+Syntax: { $nor: [ { expression1 }, { expression2 }, ... ] }
+Example: Find users who are neither aged 25 nor have status "A".
+db.users.find({ $nor: [ { age: 25 }, { status: "A" } ] })
+
+3. Element Operators
+$exists
+Description: Matches documents that have the specified field.
+Syntax: { field: { $exists: boolean } }
+Example: Find users with an email field.
+db.users.find({ email: { $exists: true } })
+
+$type
+Description: Matches documents where the field is of the specified type.
+Syntax: { field: { $type: type } }
+Example: Find users where the age field is of type double.
+db.users.find({ age: { $type: "double" } })
+
+4. Evaluation Operators
+$regex
+Description: Matches documents where the value of a field matches a specified regular expression.
+Syntax: { field: { $regex: /pattern/, $options: 'i' } }
+Example: Find users with a name starting with "Jo".
+db.users.find({ name: { $regex: /^Jo/, $options: 'i' } })
+
+$expr
+Description: Allows the use of aggregation expressions within the query language.
+Syntax: { $expr: { <expression> } }
+Example: Find users where age is greater than or equal to status (assuming status is a number).
+db.users.find({ $expr: { $gte: [ "$age", "$status" ] } })
+
+5. Array Operators
+$all
+Description: Matches arrays that contain all elements specified in the query.
+Syntax: { field: { $all: [ value1, value2, ... ] } }
+Example: Find documents where the tags array contains both "red" and "blue".
+db.inventory.find({ tags: { $all: [ "red", "blue" ] } })
+
+$elemMatch
+Description: Matches documents that contain an array field with at least one element that matches all the specified query criteria.
+Syntax: { field: { $elemMatch: { <query1>, <query2>, ... } } }
+Example: Find documents where an array field has an element that is both greater than 80 and less than 85.
+db.scores.find({ results: { $elemMatch: { $gt: 80, $lt: 85 } } })
+
+$size
+Description: Matches any array with the specified number of elements.
+Syntax: { field: { $size: n } }
+Example: Find documents where the tags array has 3 elements.
+db.inventory.find({ tags: { $size: 3 } })

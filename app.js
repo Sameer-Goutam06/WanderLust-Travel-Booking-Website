@@ -4,29 +4,37 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 const methodOverride = require('method-override');
-const ejs_mate = require('ejs-mate');
-
+const ejsMate = require('ejs-mate');
+const wrapAsync = require('./utilities/Errors/wrapAsync');
+const {ListingSchema}=require("./schema.js");
+// Set up view engine and directories
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(express.static(path.join(__dirname, 'public'))); // Serve static files
+app.engine('ejs', ejsMate);
+
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
-app.engine('ejs', ejs_mate);
 
-// Mongoose connection
-mongoose.connect('mongodb://127.0.0.1:27017/WanderLust')
-    .then(() => console.log('Connected to MongoDB'))
-    .catch((err) => console.log(err));
-
-// Require model created in models folder
-const Listing = require('./models/listing');
-
-// Listening to port number
 const port = 8080;
 app.listen(port, () => {
     console.log(`Server is running on: http://localhost:${port}`);
 });
+
+// Connect to MongoDB
+async function main(){
+    await mongoose.connect('mongodb://127.0.0.1:27017/WanderLust')
+}
+
+main()
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.log(err));
+
+// Require model created in models folder
+const Listing = require('./models/listing');
+const ExpressError = require('./utilities/Errors/ExpressError');
 
 // Root route
 app.get('/', (req, res) => {
@@ -34,14 +42,35 @@ app.get('/', (req, res) => {
 });
 
 // Listings route - list of all available destinations
-app.get('/listings', async (req, res, next) => {
-    try {
-        const listings = await Listing.find();
-        res.render('listings/index', { listings });
-    } catch (err) {
-        next(err);
+app.get('/listings', wrapAsync(async (req, res) => {
+    const l = await Listing.find();
+    if(!l)
+    {
+        throw new ExpressError(404,"DB not working");
     }
-});
+    res.render('listings/index', { l });
+}));
+
+//writing the server side validation schema for post methods like create and edit route
+//using Joi we are creating a seperate function which checks for error objects inside result object
+//so each and every error will be thrown on server side as it is done on client side
+//it is important to validate data on server side because we need to be aware of hoppscotch and postman api testers 
+///we need to create a robust and secure api
+const validateSchema=(req,res,next)=>
+{
+    //we will be receiving the validtaion details as request parameter
+    let {error}=ListingSchema.validate(req.body);
+    if (error)
+    {
+        const msg = error.details.map(el => el.message).join(',');
+        console.log(msg);
+        throw new ExpressError(404,msg);
+    }
+    else
+    {
+        next();
+    }
+}
 
 // Create a new stay destination
 app.get('/listings/new', (req, res) => {
@@ -49,81 +78,58 @@ app.get('/listings/new', (req, res) => {
 });
 
 // Acquire the details of stay place
-app.post('/listings/new', async (req, res, next) => {
-    try {
-        const newListing = new Listing(req.body.listing);
-        await newListing.save();
-        console.log('Inserted successfully');
-        res.redirect('/listings');
-    } catch (err) {
-        console.log(err);
-        next(err);
-    }
-});
+app.post('/listings/new',validateSchema, wrapAsync(async (req, res) => {
+    const newListing = new Listing(req.body.listing);
+    await newListing.save();
+    console.log('Inserted successfully');
+    console.log(newListing);
+    res.redirect('/listings');
+}));
 
 // See the details of a destination in detail using object id and anchor tags
-app.get('/listings/:id', async (req, res, next) => {
-    try {
-        const { id } = req.params;
-        const result = await Listing.findById(id);
-        res.render('listings/show', { result });
-    } catch (err) {
-        console.log(err);
-        next(err);
+app.get('/listings/:id', wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const result = await Listing.findById(id);
+    if(!result)
+    {
+        throw new ExpressError(404,"Unable to process the request at the moment.\nTry again refreshing the page and esnsure network connectivity.")
     }
-});
+    res.render('listings/show', { result });
+}));
 
 // Editing route for details of a destination
-app.get('/listings/:id/edit', async (req, res, next) => {
-    try {
-        const { id } = req.params;
-        const result = await Listing.findById(id);
-        res.render('listings/edit', { result });
-    } catch (err) {
-        console.log(err);
-        next(err);
-    }
-});
+app.get('/listings/:id/edit', wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const result = await Listing.findById(id);
+    res.render('listings/edit', { result });
+}));
 
 // PUT method to acquire the details obtained from the editing route
-app.put('/listings/:id/edit', async (req, res, next) => {
-    try {
-        const { id } = req.params;
-        const updateData = req.body.listing;
-        // Ensure the price is a number
-        updateData.price = Number(updateData.price);
-        // Ensure the image object is present
-        if (!updateData.image) {
-            updateData.image = {
-                filename: 'default-image.jpg', // Or any default value
-                url: 'https://default-image-url.jpg' // Default URL
-            };
-        }
-        const updatedListing = await Listing.findByIdAndUpdate(id, updateData, { new: true });
-        console.log('Updation successful:', updatedListing);
-        res.redirect('/listings');
-    } catch (err) {
-        console.log('Updation unsuccessful:', err);
-        next(err);
-    }
-});
+app.put('/listings/:id/edit', validateSchema,wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const updateData = req.body.listing;
+    const updatedListing = await Listing.findByIdAndUpdate(id, updateData, { new: true });
+    console.log('Updation successful:', updatedListing);
+    res.redirect('/listings');
+}));
 
 // DELETE method to delete a listing
-app.delete('/listings/:id/delete', async (req, res, next) => {
-    try {
-        const { id } = req.params;
-        await Listing.findByIdAndDelete(id);
-        console.log('Deletion successful');
-        res.redirect('/listings');
-    } catch (err) {
-        console.log('Deletion unsuccessful:', err);
-        next(err);
-    }
+app.delete('/listings/:id/delete', wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    await Listing.findByIdAndDelete(id);
+    console.log('Deletion successful');
+    res.redirect('/listings');
+}));
+
+//express error class error handling
+app.all("*",(req,res,next)=>
+{
+    next(new ExpressError(404,"Page not Found!!"));
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-    console.error(err.stack);
+    console.error(err.stack.split('\n')[1]);
     const error = {
         status: err.status || 500,
         message: err.message || 'Internal Server Error',

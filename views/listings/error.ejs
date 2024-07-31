@@ -1,17 +1,15 @@
 <% layout('layouts/boilerplate') %>
 <head>
-    <title>Error</title>
+    <title>Error <%= error.status %></title>
     <link rel="stylesheet" href="/css/error.css">
 </head>
 <body>
     <div class="container">
-        <h1 class="error-status"><%= error.status %> - <%= error.message %></h1>
+        <h1 class="error-status">Error <%= error.status %></h1>
+        <h2 class="error-message"><%= error.message %></h2><br>
         <div class="error-details">
-            <p><%= error.firstLine %></p>
-            <p>Sorry, something went wrong.</p>
-            <p>Please try again later.</p>
-            <p>If the issue persists, contact our support team.</p>
-            <p>Thank you for your understanding.</p>
+            <p>Something went wrong while processing your request.</p>
+            <p>check your Input values to avoid errors</p>
         </div>
     </div>
 </body>

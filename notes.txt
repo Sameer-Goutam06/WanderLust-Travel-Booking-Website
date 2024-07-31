@@ -1,1 +1,1 @@
-installed express,ejs,mongoose
+installed express,ejs,mongoose,joi,ejs-mate,nodemon
