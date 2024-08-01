@@ -9,13 +9,17 @@
                 <div class="row">
             <% } %>
                     <div class="card" onclick="window.location.href='/listings/<%=item._id%>'">
-                        <img src="<%= item.image.url %>" class="card-img-top" alt="destination" onerror='this.src="https://cff2.earth.com/uploads/2017/09/31200356/Nature-imagery-has-a-calming-effects-on-prisoners-850x500.jpg"'>
+                        <% if (item.image && item.image.url) { %>
+                            <img src="<%= item.image.url %>" class="card-img-top" alt="destination" onerror='this.src="https://cff2.earth.com/uploads/2017/09/31200356/Nature-imagery-has-a-calming-effects-on-prisoners-850x500.jpg"'>
+                        <% } else { %>
+                            <img src="https://cff2.earth.com/uploads/2017/09/31200356/Nature-imagery-has-a-calming-effects-on-prisoners-850x500.jpg" class="card-img-top" alt="default image">
+                        <% } %>
                         <div class="card-body">
                             <h5 class="card-title"><%= item.title %></h5>
                             <p class="card-text">
                                 <%= item.country %>
                                 <br>
-                                ₹<%= item.price.toLocaleString("en-IN") %>/night
+                                ₹<%= item.price %>/night
                             </p>
                         </div>
                     </div>

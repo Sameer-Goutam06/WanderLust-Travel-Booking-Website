@@ -3,14 +3,14 @@
 <body>
     <div class="container">
         <div class="destination-header">
-            <h1><%= result.title %></h1>
+            <h1 style="font-weight: 400; padding: 1rem; padding-top: 0.5rem;"><%= result.title %></h1>
         </div>
         <img src="<%= result.image.url %>" alt="Destination Image" class="destination-image" onerror='this.src="https://cff2.earth.com/uploads/2017/09/31200356/Nature-imagery-has-a-calming-effects-on-prisoners-850x500.jpg"'>
         <ul class="destination-details">
             <li><%= result.description %></li>
             <li><p style="font-weight: 600;">Price</p><p>₹<%= result.price.toLocaleString("en-IN") %></p></li>
             <li><p style="font-weight: 600;">Location</p><p><%= result.location %></p></li>
-            <li><p style="font-weight: 600;">Country</p><p><%= result.country %></p></li>
+            <li><p style="font-weight: 600;">Country</p><%= result.country %></p></li>
         </ul>
         <div class="buttons">
             <button class="edit" onclick="window.location.href='/listings/<%= result._id %>/edit'">Edit data</button>
@@ -20,12 +20,13 @@
         </div>
         <hr>
         <form id="reviewForm" action="/listings/<%= result._id %>/reviews" method="post" class="form">
+            <h3 style="font-weight: 400; font-family: Open-Sans;">Review This Stay</h3>
             <div class="user-rating">
                 <label for="rating">Rating</label>
                 <input type="range" min="0.5" max="5" value="0.5" step="0.5" id="rating" name="review[rating]" required>
             </div>
             <div class="user-review">
-                <label for="comment">Review</label>
+                <label for="comment">Comment</label>
                 <textarea name="review[comment]" id="comment" cols="70" rows="2" required></textarea>
             </div>
             <br>
@@ -34,5 +35,26 @@
         <p id="error-message" style="color: red; display: none;"></p>
         <script src="/js/listings/show.js"></script>        
         <hr>
+        <div class="reviews-container">
+            <h3 style="font-weight: 400; font-family: Open-Sans;">Reviews</h3>
+            <% if (result.reviews.length>0) { %>
+                <h5 style="font-weight: 400; font-family: Open-Sans; padding-bottom: 0.5rem;">Average Rating: <%= result.averageRating %>&#9733;</h5>
+            <% } %>
+            <% if (result.reviews.length > 0) { %>
+                <% result.reviews.forEach(review => { %>
+                    <div class="review">
+                        <h6>Verified User</h6>
+                        <p><strong>Rating:</strong> <%= review.rating %>&#9733;</p>
+                        <p><%= review.comment %></p>
+                        <p><em>Posted on <%= new Date(review.createdAt).toLocaleDateString() %></em></p>
+                        <form action="/listings/<%= result._id %>/reviews/<%= review._id %>/delete?_method=DELETE" method="post">
+                            <button type="submit" class="btn btn-sm btn-dark">DELETE Review</button>
+                        </form>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>No reviews yet. Be the first to review!</p>
+            <% } %>
+        </div>
     </div>
 </body>

@@ -1,5 +1,6 @@
 const mongoose=require('mongoose');
 const Schema=mongoose.Schema;
+const Review=require("./review.js");
 const ListingSchema=new Schema
 ({
     title:
@@ -28,6 +29,16 @@ const ListingSchema=new Schema
         type:Schema.Types.ObjectId,
         ref:"Review"
     }],
+    averageRating:Number,
+});
+
+ListingSchema.post("findOneAndDelete",async(listing)=>{
+    if(listing)
+    {
+        console.log(listing);
+        await Review.deleteMany({_id:{$in:listing.reviews}});
+        console.log("Reviews for "+listing.title+" deleted successfully");
+    }
 });
 
 const Listing=mongoose.model("Listing",ListingSchema);
