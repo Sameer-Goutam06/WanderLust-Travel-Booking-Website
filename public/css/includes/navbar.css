@@ -94,10 +94,9 @@
         font-size: 1.25rem; /* Adjust for mobile screens */
     }
 
-    .navbar-collapse .show .nav-link {
+    .navbar-collapse.show .nav-link {
         display: block;
         width: 100%;
         text-align: left;
-        border-bottom: 2px light white;
     }
 }

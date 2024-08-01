@@ -6,6 +6,7 @@ const path = require('path');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const wrapAsync = require('./utilities/Errors/wrapAsync');
+//used for joi validation purposes
 const {ListingSchema}=require("./schema.js");
 // Set up view engine and directories
 app.set('views', path.join(__dirname, 'views'));
@@ -35,6 +36,7 @@ main()
 // Require model created in models folder
 const Listing = require('./models/listing');
 const ExpressError = require('./utilities/Errors/ExpressError');
+const Review=require("./models/review.js");
 
 // Root route
 app.get('/', (req, res) => {
@@ -71,6 +73,7 @@ const validateSchema=(req,res,next)=>
         next();
     }
 }
+
 
 // Create a new stay destination
 app.get('/listings/new', (req, res) => {
@@ -112,6 +115,21 @@ app.put('/listings/:id/edit', validateSchema,wrapAsync(async (req, res) => {
     console.log('Updation successful:', updatedListing);
     res.redirect('/listings');
 }));
+
+//post route to update reviews for listing
+app.post("/listings/:id/reviews",wrapAsync(
+    async(req,res)=>{
+        const { id } = req.params;
+        let stay=await Listing.findById(id);
+        let newReview=new Review(req.body.review);
+        await newReview.save();
+        console.log("Review Saved")
+        stay.reviews.push(newReview);
+        await stay.save();
+        console.log("Destination Reviews Updated")
+        res.redirect(`/listings/${id}`);
+    }
+))
 
 // DELETE method to delete a listing
 app.delete('/listings/:id/delete', wrapAsync(async (req, res) => {
