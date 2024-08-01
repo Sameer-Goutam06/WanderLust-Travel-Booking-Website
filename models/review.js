@@ -5,7 +5,7 @@ const reviewSchema=new Schema({
     rating:{
         type:Number,
         min:0,
-        max:5
+        max:5,
     },
     createdAt:
     {

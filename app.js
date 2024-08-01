@@ -7,7 +7,7 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const wrapAsync = require('./utilities/Errors/wrapAsync');
 //used for joi validation purposes
-const {ListingSchema}=require("./schema.js");
+const {ListingSchema,ReviewSchema}=require("./schema.js");
 // Set up view engine and directories
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -58,22 +58,25 @@ app.get('/listings', wrapAsync(async (req, res) => {
 //so each and every error will be thrown on server side as it is done on client side
 //it is important to validate data on server side because we need to be aware of hoppscotch and postman api testers 
 ///we need to create a robust and secure api
-const validateSchema=(req,res,next)=>
-{
-    //we will be receiving the validtaion details as request parameter
-    let {error}=ListingSchema.validate(req.body);
-    if (error)
-    {
+const validateListing = (req, res, next) => {
+    let { error } = ListingSchema.validate(req.body);
+    if (error) {
         const msg = error.details.map(el => el.message).join(',');
         console.log(msg);
-        throw new ExpressError(404,msg);
-    }
-    else
-    {
+        throw new ExpressError(404, msg);
+    } else {
         next();
     }
 }
 
+const validateReview = (req, res, next) => {
+    let { error } = ReviewSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',');
+        console.log(msg);
+        throw new ExpressError(404, msg);
+    }
+}
 
 // Create a new stay destination
 app.get('/listings/new', (req, res) => {
@@ -81,7 +84,7 @@ app.get('/listings/new', (req, res) => {
 });
 
 // Acquire the details of stay place
-app.post('/listings/new',validateSchema, wrapAsync(async (req, res) => {
+app.post('/listings/new',validateListing, wrapAsync(async (req, res) => {
     const newListing = new Listing(req.body.listing);
     await newListing.save();
     console.log('Inserted successfully');
@@ -108,7 +111,7 @@ app.get('/listings/:id/edit', wrapAsync(async (req, res) => {
 }));
 
 // PUT method to acquire the details obtained from the editing route
-app.put('/listings/:id/edit', validateSchema,wrapAsync(async (req, res) => {
+app.put('/listings/:id/edit', validateListing,wrapAsync(async (req, res) => {
     const { id } = req.params;
     const updateData = req.body.listing;
     const updatedListing = await Listing.findByIdAndUpdate(id, updateData, { new: true });
@@ -117,19 +120,19 @@ app.put('/listings/:id/edit', validateSchema,wrapAsync(async (req, res) => {
 }));
 
 //post route to update reviews for listing
-app.post("/listings/:id/reviews",wrapAsync(
-    async(req,res)=>{
-        const { id } = req.params;
-        let stay=await Listing.findById(id);
-        let newReview=new Review(req.body.review);
-        await newReview.save();
-        console.log("Review Saved")
-        stay.reviews.push(newReview);
-        await stay.save();
-        console.log("Destination Reviews Updated")
-        res.redirect(`/listings/${id}`);
+app.post("/listings/:id/reviews", validateReview, wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    let stay = await Listing.findById(id);
+    if (!stay) {
+        throw new ExpressError(404, "Listing not found");
     }
-))
+    let newReview = new Review(req.body.review);
+    await newReview.save();
+    stay.reviews.push(newReview);
+    await stay.save();
+    res.redirect(`/listings/${id}`);
+}));
+
 
 // DELETE method to delete a listing
 app.delete('/listings/:id/delete', wrapAsync(async (req, res) => {

@@ -2,11 +2,10 @@
 //used joi package
 const Joi = require('joi');
 
-// Creating a user-defined schema to get validated inside a Joi object
-module.exports.ListingSchema = Joi.object({
+const ListingSchema = Joi.object({
     listing: Joi.object({
         title: Joi.string().required(),
-        description: Joi.string().required().min(50).max(500), // Add min and max length for description
+        description: Joi.string().required().min(50).max(500),
         location: Joi.string().required(),
         country: Joi.string().required(),
         price: Joi.number().required().min(500).max(50000),
@@ -16,3 +15,12 @@ module.exports.ListingSchema = Joi.object({
         }).required()
     }).required(),
 });
+
+//creating a user defined schema to verify reviews
+const ReviewSchema = Joi.object({
+    review: Joi.object({
+        rating: Joi.number().required().min(0.5).max(5),
+        comment: Joi.string().required().min(5).max(500),
+    }).required(),
+});
+module.exports={ListingSchema,ReviewSchema};
