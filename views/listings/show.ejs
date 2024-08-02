@@ -20,7 +20,7 @@
         </div>
         <hr>
         <form id="reviewForm" action="/listings/<%= result._id %>/reviews" method="post" class="form">
-            <h3 style="font-weight: 400; font-family: Open-Sans;">Review This Stay</h3>
+            <h3 class="review-heading">Review This Stay</h3>
             <div class="user-rating">
                 <label for="rating">Rating</label>
                 <input type="range" min="0.5" max="5" value="0.5" step="0.5" id="rating" name="review[rating]" required>
@@ -36,7 +36,7 @@
         <script src="/js/listings/show.js"></script>        
         <hr>
         <div class="reviews-container">
-            <h3 style="font-weight: 400; font-family: Open-Sans;">Reviews</h3>
+            <h3 class="review-heading">Reviews</h3>
             <% if (result.reviews.length>0) { %>
                 <h5 style="font-weight: 400; font-family: Open-Sans; padding-bottom: 0.5rem;">Average Rating: <%= result.averageRating %>&#9733;</h5>
             <% } %>

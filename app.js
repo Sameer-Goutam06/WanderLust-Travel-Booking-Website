@@ -9,7 +9,7 @@ const wrapAsync = require('./utilities/Errors/wrapAsync');
 const ExpressError = require('./utilities/Errors/ExpressError');
 const Listing = require('./models/listing');
 const Review = require("./models/review.js");
-
+const session=require("express-session");
 // Setting Up Things.....
 
 // Set up view engine and directories
@@ -23,6 +23,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
+//express-seeion settings and usage
+const sessionOptions={
+    secret:"MySecretKey",
+    resave:false,
+    saveUninitialized:true,
+    cookie:{
+        expires:Date.now() + 1000*60*60*24*3,
+        maxAge:1000*60*60*24*3,
+        httpOnly:true,
+    }
+}
+
+//express-session usage
+app.use(session(sessionOptions));
 // Connect to MongoDB
 async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/WanderLust');
