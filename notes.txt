@@ -1,4 +1,4 @@
-installed express,ejs,mongoose,joi,ejs-mate,nodemon,method-override
+installed express,ejs,mongoose,joi,ejs-mate,nodemon,method-override,express-sessions,connect-flash
 
 The requirements and settings in app.js
 

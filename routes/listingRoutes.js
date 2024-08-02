@@ -9,6 +9,7 @@ const { ListingSchema } = require("../schema.js");
 // Require model created in models folder
 const Listing = require('../models/listing.js');
 const Review = require("../models/review.js");
+//acquiring connect-flash and using it
 
 //writing the server side validation schema for post methods like create and edit route
 //using Joi we are creating a seperate function which checks for error objects inside result object
@@ -47,6 +48,7 @@ router.post('/new', validateSchema, wrapAsync(async (req, res) => {
     await newListing.save();
     console.log('Inserted successfully');
     console.log(newListing);
+    req.flash("success","New Stay Created");
     res.redirect('/listings');
 }));
 
@@ -55,7 +57,8 @@ router.get('/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     const result = await Listing.findById(id).populate("reviews");
     if (!result) {
-        throw new ExpressError(404, "Unable to process the request at the moment. Try again refreshing the page and ensure network connectivity.");
+        req.flash("failure","Location Unavailable");
+        return res.redirect("/listings");
     }
     if (result.reviews.length > 0) {
         const totalRating = result.reviews.reduce((sum, review) => sum + review.rating, 0);
@@ -79,7 +82,8 @@ router.put('/:id/edit', validateSchema, wrapAsync(async (req, res) => {
     const updateData = req.body.listing;
     const updatedListing = await Listing.findByIdAndUpdate(id, updateData, { new: true });
     console.log('Updation successful:', updatedListing);
-    res.redirect('/listings');
+    req.flash("success","Updation for Stay is successful");
+    res.redirect(`/listings/${id}`);
 }));
 
 // DELETE method to delete a listing
@@ -87,6 +91,7 @@ router.delete('/:id/delete', wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Listing.findByIdAndDelete(id);
     console.log('Deletion successful');
+    req.flash("success","Deletion of Stay is successful");
     res.redirect('/listings');
     //if we are deleting a particular destination then we must say that the reviews given for the destination are to be deleted
     //so the deletion process of reviews will be done in /models/listing.js

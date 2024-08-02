@@ -5,11 +5,13 @@ const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const mongoose = require('mongoose');
+const session=require("express-session");
+const flash=require("connect-flash");
 const wrapAsync = require('./utilities/Errors/wrapAsync');
 const ExpressError = require('./utilities/Errors/ExpressError');
 const Listing = require('./models/listing');
 const Review = require("./models/review.js");
-const session=require("express-session");
+
 // Setting Up Things.....
 
 // Set up view engine and directories
@@ -37,6 +39,9 @@ const sessionOptions={
 
 //express-session usage
 app.use(session(sessionOptions));
+//connect-flash usage
+app.use(flash());
+
 // Connect to MongoDB
 async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/WanderLust');
@@ -48,6 +53,13 @@ main()
 // Root route
 app.get('/', (req, res) => {
     res.redirect("/listings");
+});
+
+//middleware to acquire flash data
+app.use((req,res,next)=>{
+    res.locals.success=req.flash("success");
+    res.locals.failure=req.flash("failure");
+    next();
 });
 
 // Acquire listing routes

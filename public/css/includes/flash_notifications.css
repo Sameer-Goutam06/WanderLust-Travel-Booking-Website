@@ -1,0 +1,38 @@
+.flash-notifications
+{
+    position: fixed;
+    top:5rem;
+    left: 50%; /* Move to the middle of the viewport horizontally */
+    transform: translate(-50%, -50%);
+    width:fit-content;
+    height: fit-content;
+    font-family:Montserrat; 
+    font-weight: 400; 
+    padding: 1rem 2rem; 
+    background-color: rgb(32, 32, 32); 
+    color:white;
+    margin-top: 1rem;
+    border-radius: 50px;
+    animation: flash;
+    animation-duration: 2.6s;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+}
+
+@keyframes flash {
+    0%{
+        opacity: 1;
+    }
+    100%
+    {
+        opacity: 0;
+        display: none;
+    }
+}
+@media (max-width:768px) {
+    .flash-notifications
+    {
+        padding: 1rem 1rem;
+        margin-top: 1rem;
+    }
+}

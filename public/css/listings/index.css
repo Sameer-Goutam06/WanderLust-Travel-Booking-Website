@@ -116,3 +116,39 @@
         height: auto; /* Adjust height for card body on mobile */
     }
 }
+
+/* css for flash message */
+/* CSS for Flash Message */
+.flash-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4caf50; /* Green for success */
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    z-index: 1000;
+}
+
+/* Media query for tablets */
+@media (max-width: 768px) {
+    .flash-message {
+        top: 10px;
+        right: 10px;
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Media query for mobile phones */
+@media (max-width: 480px) {
+    .flash-message {
+        top: 5px;
+        right: 5px;
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+}

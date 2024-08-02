@@ -1,0 +1,20 @@
+<link rel="stylesheet" href="/css/includes/flash_notifications.css">
+<% if (success && success.length) { %>
+    <h6 class="flash-notifications"><%= success %></h6>
+<% } %>
+<% if (failure && failure.length) { %>
+    <h6 class="flash-notifications"><%= failure %></h6>
+<% } %>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+    // Check if there's a flash message element
+    const flashMessage = document.querySelector('.flash-notifications');
+    if (flashMessage) {
+        // Hide the flash message after 3 seconds
+        setTimeout(() => {
+            flashMessage.style.opacity = '0';
+            setTimeout(() => flashMessage.remove(), 100); // Remove element after fade out
+        }, 2500);
+    }
+    });
+</script>
