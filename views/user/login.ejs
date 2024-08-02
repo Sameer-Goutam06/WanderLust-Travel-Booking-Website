@@ -1,0 +1,20 @@
+<%- layout("layouts/boilerplate") %>
+<link rel="stylesheet" href="/css/user/login.css">
+<body>
+    <div class="form-container">
+        <h1>WanderLust - Login</h1>
+        <form id="signupForm" action="/user/login" method="post" novalidate>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required placeholder="Enter your username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your Password">
+            </div>
+            <button type="submit">Sign Up</button>
+            <br>
+            <center><h6>Don't have an account?&nbsp;<a href="/user/signup">Create one</a></h6></center>
+        </form>
+    </div>
+</body>

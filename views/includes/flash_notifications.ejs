@@ -1,8 +1,8 @@
 <link rel="stylesheet" href="/css/includes/flash_notifications.css">
 <% if (success && success.length) { %>
-    <h6 class="flash-notifications"><%= success %></h6>
+    <h6 class="flash-notifications success"><%= success %></h6>
 <% } %>
-<% if (failure && failure.length) { %>
-    <h6 class="flash-notifications"><%= failure %></h6>
+<% if (error && error.length) { %>
+    <h6 class="flash-notifications failure"><%= error %></h6>
 <% } %>
 <script src="/js/includes/flash_notifications.js"></script>

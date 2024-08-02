@@ -1,3 +1,4 @@
+//admin user id and password {Admin, admin@gmail.com, admin@123}
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -5,12 +6,19 @@ const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const mongoose = require('mongoose');
+//acquiring session and many more models
 const session=require("express-session");
 const flash=require("connect-flash");
+//acquiring error modules
 const wrapAsync = require('./utilities/Errors/wrapAsync');
 const ExpressError = require('./utilities/Errors/ExpressError');
+//acquiring models
+const User=require("./models/user.js");
 const Listing = require('./models/listing');
 const Review = require("./models/review.js");
+//acquiring passport modules for authentication and authorization
+const passport=require("passport")
+const LocalStrategy=require("passport-local")
 
 // Setting Up Things.....
 
@@ -24,6 +32,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+
+
+// Connect to MongoDB
+async function main() {
+    await mongoose.connect('mongodb://127.0.0.1:27017/WanderLust');
+}
+main()
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.log(err));
+
 
 //express-seeion settings and usage
 const sessionOptions={
@@ -41,14 +59,16 @@ const sessionOptions={
 app.use(session(sessionOptions));
 //connect-flash usage
 app.use(flash());
+//passport middlware is used for sessions so we need to initialize it fresh for every session
+app.use(passport.initialize());
+app.use(passport.session())
+//authentication method using LocalStrategy
+passport.use(new LocalStrategy(User.authenticate()));
+//serialize and deserialize user -> to store a users info acquired in a session
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-// Connect to MongoDB
-async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/WanderLust');
-}
-main()
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.log(err));
+
 
 // Root route
 app.get('/', (req, res) => {
@@ -58,7 +78,8 @@ app.get('/', (req, res) => {
 //middleware to acquire flash data
 app.use((req,res,next)=>{
     res.locals.success=req.flash("success");
-    res.locals.failure=req.flash("failure");
+    res.locals.error=req.flash("error");
+    res.locals.user=req.user;
     next();
 });
 
@@ -69,6 +90,10 @@ app.use("/listings", listingRoutes);
 //acquire review routes
 const reviewRoutes=require("./routes/reviewRoutes.js");
 app.use("/listings/:id/reviews",reviewRoutes);
+
+//acquire user routes
+const userRoutes=require("./routes/userRoutes.js");
+app.use("/user",userRoutes);
 
 // Error handling middleware
 app.all("*", (req, res, next) => {

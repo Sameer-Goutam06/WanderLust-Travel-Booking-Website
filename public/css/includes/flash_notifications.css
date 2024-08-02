@@ -14,9 +14,19 @@
     margin-top: 1rem;
     border-radius: 50px;
     animation: flash;
-    animation-duration: 2.6s;
+    animation-duration: 2.5s;
     animation-timing-function: linear;
     animation-iteration-count: 1;
+}
+
+.success
+{
+    background-color: rgb(44, 129, 44);
+}
+
+.failure
+{
+    background-color: rgb(238, 58, 58);
 }
 
 @keyframes flash {

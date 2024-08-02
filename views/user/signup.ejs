@@ -1,0 +1,31 @@
+<%- layout("layouts/boilerplate") %>
+<link rel="stylesheet" href="/css/user/signup.css">
+<body>
+    <div class="form-container">
+        <h1>WanderLust - SignUp</h1>
+        <form id="signupForm" action="/user/signup" method="post" novalidate>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required placeholder="Enter a username">
+                <div class="invalid-feedback">Username must be filled and less than or equal to 10 characters.</div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="Enter an email">
+                <div class="invalid-feedback">Email is required.</div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter a Password">
+                <div class="invalid-feedback">Password must be 8 to 12 characters long with no spaces.</div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm the password">
+                <div class="invalid-feedback">Passwords do not match.</div>
+            </div>
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+    <script src="/js/user/signup.js"></script>
+</body>

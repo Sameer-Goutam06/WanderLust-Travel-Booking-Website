@@ -9,6 +9,8 @@ const { ListingSchema } = require("../schema.js");
 // Require model created in models folder
 const Listing = require('../models/listing.js');
 const Review = require("../models/review.js");
+const passport=require("passport");
+const {isLoggedIn}=require("../isLoggedIn.js");
 //acquiring connect-flash and using it
 
 //writing the server side validation schema for post methods like create and edit route
@@ -38,12 +40,12 @@ router.get('/', wrapAsync(async (req, res) => {
 }));
 
 // Create a new stay destination
-router.get('/new', (req, res) => {
+router.get('/new',isLoggedIn, (req, res) => {
     res.render('listings/new');
 });
 
 // Acquire the details of stay place
-router.post('/new', validateSchema, wrapAsync(async (req, res) => {
+router.post('/new',isLoggedIn, validateSchema, wrapAsync(async (req, res) => {
     const newListing = new Listing(req.body.listing);
     await newListing.save();
     console.log('Inserted successfully');
@@ -57,7 +59,7 @@ router.get('/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     const result = await Listing.findById(id).populate("reviews");
     if (!result) {
-        req.flash("failure","Location Unavailable");
+        req.flash("error","Location Unavailable");
         return res.redirect("/listings");
     }
     if (result.reviews.length > 0) {
@@ -70,24 +72,24 @@ router.get('/:id', wrapAsync(async (req, res) => {
 }));
 
 // Editing route for details of a destination
-router.get('/:id/edit', wrapAsync(async (req, res) => {
+router.get('/:id/edit',isLoggedIn, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const result = await Listing.findById(id);
     res.render('listings/edit', { result });
 }));
 
 // PUT method to acquire the details obtained from the editing route
-router.put('/:id/edit', validateSchema, wrapAsync(async (req, res) => {
+router.put('/:id/edit',isLoggedIn, validateSchema, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const updateData = req.body.listing;
     const updatedListing = await Listing.findByIdAndUpdate(id, updateData, { new: true });
-    console.log('Updation successful:', updatedListing);
+    console.log('Updation successful');
     req.flash("success","Updation for Stay is successful");
     res.redirect(`/listings/${id}`);
 }));
 
 // DELETE method to delete a listing
-router.delete('/:id/delete', wrapAsync(async (req, res) => {
+router.delete('/:id/delete',isLoggedIn, wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Listing.findByIdAndDelete(id);
     console.log('Deletion successful');
