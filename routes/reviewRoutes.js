@@ -8,7 +8,7 @@ const { ReviewSchema } = require("../schema.js");
 // Require model created in models folder
 const Listing = require('../models/listing.js');
 const Review = require("../models/review.js");
-const {isLoggedIn}=require("../isLoggedIn.js");
+const {isLoggedIn,isReviewAuthor}=require("../middleware.js");
 
 
 // Validate Review Schema
@@ -28,6 +28,7 @@ router.post("/",isLoggedIn, validateReview, wrapAsync(async (req, res) => {
     const { id } = req.params;
     let stay = await Listing.findById(id);
     let newReview = new Review(req.body.review);
+    newReview.author=req.user._id;
     let res1=await newReview.save();
     console.log(res1);
     stay.reviews.push(newReview);
@@ -38,7 +39,7 @@ router.post("/",isLoggedIn, validateReview, wrapAsync(async (req, res) => {
 }));
 
 // DELETE method to delete a review
-router.delete("/:rid/delete",isLoggedIn, wrapAsync(async (req, res) => {
+router.delete("/:rid/delete",isLoggedIn,isReviewAuthor, wrapAsync(async (req, res) => {
     let { id, rid } = req.params;
     await Listing.findByIdAndUpdate(id, { $pull: { reviews: rid } });
     console.log("Review deleted from that destination");

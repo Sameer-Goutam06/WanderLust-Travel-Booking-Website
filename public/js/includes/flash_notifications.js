@@ -6,6 +6,6 @@ if (flashMessage) {
     setTimeout(() => {
         flashMessage.style.opacity = '0';
         setTimeout(() => flashMessage.remove(), 100); // Remove element after fade out
-    }, 2300);
+    }, 3900);
 }
 });

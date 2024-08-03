@@ -14,7 +14,7 @@
     margin-top: 1rem;
     border-radius: 50px;
     animation: flash;
-    animation-duration: 2.5s;
+    animation-duration: 4s;
     animation-timing-function: linear;
     animation-iteration-count: 1;
 }
