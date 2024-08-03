@@ -7,76 +7,35 @@ const ExpressError = require('../utilities/Errors/ExpressError.js');
 // Require model created in models folder
 const Listing = require('../models/listing.js');
 const {isLoggedIn,isOwner,validateSchema}=require("../middleware.js");
+const{getListings,
+    getNewListings,
+    postNewListings,
+    getListingsById,
+    getEditListings,
+    putEditListings,
+    deleteListings}=require("../controllers/listingController.js");
 
+
+//path to export methods
 
 // Listings route - list of all available destinations
-router.get('/', wrapAsync(async (req, res) => {
-    const l = await Listing.find();
-    if (!l) {
-        throw new ExpressError(404, "DB not working");
-    }
-    res.render('listings/index', { l });
-}));
+router.get('/', wrapAsync(getListings));
 
 // Create a new stay destination
-router.get('/new',isLoggedIn, (req, res) => {
-    res.render('listings/new');
-});
+router.route("/new")
+    .get('/new',isLoggedIn, getNewListings)
+    .post('/new',isLoggedIn, validateSchema, wrapAsync(postNewListings));// Acquire the details of stay place
 
-// Acquire the details of stay place
-router.post('/new',isLoggedIn, validateSchema, wrapAsync(async (req, res) => {
-    const newListing = new Listing(req.body.listing);
-    await newListing.save();
-    console.log('Inserted successfully');
-    console.log(newListing);
-    req.flash("success","New Stay Created");
-    res.redirect('/listings');
-}));
+
 
 // See the details of a destination in detail using object id and anchor tags
-router.get('/:id',wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const result = await Listing.findById(id).populate({path:"reviews",populate:{path:"author"}});
-    if (!result) {
-        req.flash("error","Location Unavailable");
-        return res.redirect("/listings");
-    }
-    if (result.reviews.length > 0) {
-        const totalRating = result.reviews.reduce((sum, review) => sum + review.rating, 0);
-        result.averageRating = (totalRating / result.reviews.length).toFixed(2);
-    } else {
-        result.averageRating = 0;
-    }
-    res.render('listings/show', { result });
-}));
+router.get('/:id',wrapAsync(getListingsById));
 
-// Editing route for details of a destination
-router.get('/:id/edit',isLoggedIn,isOwner, wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const result = await Listing.findById(id);
-    res.render('listings/edit', { result });
-}));
-
-// PUT method to acquire the details obtained from the editing route
-router.put('/:id/edit',isLoggedIn,isOwner, validateSchema, wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const updationData = req.body.listing;
-    const updatedListing = await Listing.findByIdAndUpdate(id, updationData, { new: true });
-    console.log('Updation successful');
-    req.flash("success","Updation for Stay is successful");
-    return res.redirect(`/listings/${id}`);
-}));
+router.route('/:id/edit')
+    .get(isLoggedIn,isOwner, wrapAsync(getEditListings))// Editing route for details of a destination
+    .put(isLoggedIn,isOwner, validateSchema, wrapAsync(putEditListings));// PUT method to acquire the details obtained from the editing route
 
 // DELETE method to delete a listing
-router.delete('/:id/delete',isLoggedIn,isOwner, wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    await Listing.findByIdAndDelete(id);
-    console.log('Deletion successful');
-    req.flash("success","Deletion of Stay is successful");
-    res.redirect('/listings');
-    //if we are deleting a particular destination then we must say that the reviews given for the destination are to be deleted
-    //so the deletion process of reviews will be done in /models/listing.js
-    //we use mongoDB techniques to delete all the reviews related to a stay
-}));
+router.delete('/:id/delete',isLoggedIn,isOwner, wrapAsync(deleteListings));
 
 module.exports = router;

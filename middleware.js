@@ -25,7 +25,7 @@ module.exports.validateSchema = (req, res, next) => {
 };
 
 // Validate Review Schema
-const validateReview = (req, res, next) => {
+module.exports.validateReview = (req, res, next) => {
     let { error } = ReviewSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',');

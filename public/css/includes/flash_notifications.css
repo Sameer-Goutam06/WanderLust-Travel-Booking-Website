@@ -7,8 +7,9 @@
     width:fit-content;
     height: fit-content;
     font-family:Montserrat; 
-    font-weight: 400; 
-    padding: 1rem 2rem; 
+    font-weight: 400;
+    font-size:2.5vmin; 
+    padding: 1.5vmin 2.5vmin; 
     background-color: rgb(32, 32, 32); 
     color:white;
     margin-top: 1rem;

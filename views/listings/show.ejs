@@ -12,6 +12,11 @@
             <li><p style="font-weight: 600;">Location</p><p><%= result.location %></p></li>
             <li><p style="font-weight: 600;">Country</p><%= result.country %></p></li>
         </ul>
+        <% if (currentUser && result.owner) { %>
+            <%= console.log("currentUser:", currentUser) %>
+            <%= console.log("result.owner:", result.owner) %>
+        <% } %>
+        
         <% if (currentUser && ((currentUser._id).equals(result.owner._id))) { %>
             <div class="buttons">
                 <button class="edit" onclick="window.location.href='/listings/<%= result._id %>/edit'">Edit data</button>
