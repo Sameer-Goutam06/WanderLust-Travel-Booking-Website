@@ -23,8 +23,8 @@ router.get('/', wrapAsync(getListings));
 
 // Create a new stay destination
 router.route("/new")
-    .get('/new',isLoggedIn, getNewListings)
-    .post('/new',isLoggedIn, validateSchema, wrapAsync(postNewListings));// Acquire the details of stay place
+    .get(isLoggedIn, getNewListings)
+    .post(isLoggedIn, validateSchema, wrapAsync(postNewListings));// Acquire the details of stay place
 
 
 
