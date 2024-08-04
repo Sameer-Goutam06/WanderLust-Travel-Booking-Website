@@ -95,6 +95,10 @@ app.use("/listings/:id/reviews",reviewRoutes);
 const userRoutes=require("./routes/userRoutes.js");
 app.use("/user",userRoutes);
 
+//acquire booking routes
+const bookingRoutes=require("./routes/bookingRoutes.js")
+app.use("/bookings",bookingRoutes);
+
 // Error handling middleware
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page not Found!!"));

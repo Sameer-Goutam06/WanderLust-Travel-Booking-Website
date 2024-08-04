@@ -23,4 +23,15 @@ const ReviewSchema = Joi.object({
         comment: Joi.string().required().min(5).max(500),
     }).required(),
 });
-module.exports={ListingSchema,ReviewSchema};
+
+// Define Joi schema for validation
+const bookingSchema = Joi.object({
+    name: Joi.string().min(1).max(100).required(),
+    count: Joi.number().integer().min(1).max(20).required(),
+    date: Joi.object({
+        startDate: Joi.date().iso().required(),
+        endDate: Joi.date().iso().required()
+    }).required()
+});
+
+module.exports={ListingSchema,ReviewSchema,bookingSchema};

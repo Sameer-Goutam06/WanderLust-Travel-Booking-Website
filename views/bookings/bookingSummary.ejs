@@ -1,0 +1,32 @@
+<%- layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/css/bookings/bookingSummary.css">
+<body>
+    <div class="summary-container">
+        <h1>WanderLust - Booking Summary</h1>
+        <br>
+        <div class="summary-details">
+            <h2>User Details</h2>
+            <p><strong>Username:</strong> <%= user.username %></p>
+            <p><strong>Full Name:</strong> <%= user.fullName %></p>
+            <br>
+            <h2>Listing Details</h2>
+            <p><strong>Place:</strong> <%= listing.title %></p>
+            <p><strong>Location:</strong> <%= listing.location %></p>
+            <p><strong>Price: </strong> &#8377;<%= listing.price %> / Room / Day & Night</p>
+            <br>
+            <h2>Booking Details</h2>
+            <p><strong>Visitor Name:</strong> <%= booking.name %></p>
+            <p><strong>Number of Rooms:</strong> <%= booking.count %></p>
+            <p><strong>Start Date:</strong> <%= booking.date.startDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+            <p><strong>End Date:</strong> <%= booking.date.endDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+            <p><strong>Number of Days:</strong> <%= booking.days %></p>
+            <p><strong>Total Price:</strong> &#8377;<%= booking.price %></p>
+            <br>
+        </div>
+        <div class="buttons">
+            <button onclick="window.location.href='/listings/<%= listing._id %>'">View Stay Details</button>
+            <button onclick="window.location.href='/listings'">Home</button>
+        </div>
+    </div>
+    <script src="/js/bookings/bookingSummary.js"></script>
+</body>

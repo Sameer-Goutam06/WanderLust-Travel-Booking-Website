@@ -1,0 +1,32 @@
+<%- layout("layouts/boilerplate") %>
+<link rel="stylesheet" href="/css/user/profile.css">
+<body>
+    <div class="container">
+        <div class="user-profile">
+            <h1>WanderLust - User Profile</h1>
+            <div class="user-info">
+                <div class="user-detail">
+                    <strong>Username:</strong> <span><%= user.username %></span>
+                </div>
+                <div class="user-detail">
+                    <strong>Full Name:</strong> <span><%= user.fullName %></span>
+                </div>
+                <div class="user-detail">
+                    <strong>Email:</strong> <span><%= user.email %></span>
+                </div>
+            </div>
+        </div>
+        <div class="bookings-container">
+            <h2>Booking Summary (<%= user.bookings.length %>)</h2>
+            <% user.bookings.forEach((booking) => { %>
+                <div class="booking-card">
+                    <h3><%= booking.listing.title %></h3>
+                    <p><strong>Date:</strong> <%= booking.date.bookedOnDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                    <p><strong>Visitor:</strong> <%= booking.name%></p>
+                    <a href="/bookings/bookingSummary/<%= booking.id %>" class="btn">View Booking Summary</a>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</body>
+</html>

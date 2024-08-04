@@ -12,11 +12,20 @@ module.exports.getListings=async (req, res) => {
 }
 
 module.exports.getNewListings=(req, res) => {
+    console.log(res.locals.currentUser.username);
+    if(((res.locals.currentUser.username)!=="Admin"))
+    {
+        throw new ExpressError(404,"Only the developer of this website is authorized to create a new listing");
+    }
     res.render('listings/new');
 }
 
-module.exports.postNewListings=async (req, res) => {
+module.exports.postNewListings=async(req, res) => {
     const newListing = new Listing(req.body.listing);
+    if(((res.locals.currentUser.username)!=="Admin"))
+    {
+        throw new ExpressError(404,"Only the developer of this website is authorized to create a new listing");
+    }
     newListing.owner=req.user._id;
     await newListing.save();
     console.log('Inserted successfully');

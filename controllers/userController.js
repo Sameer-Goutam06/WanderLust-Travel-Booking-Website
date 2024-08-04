@@ -10,12 +10,12 @@ module.exports.getSignUp=async(req,res)=>{
 module.exports.postSignUp=async(req,res)=>{
     try
     {
-        let {username,email,password,confirmPassword}=req.body;
+        let {username,email,fullName,password,confirmPassword}=req.body;
         if(password!=confirmPassword)
         {
             throw new ExpressError("Passwords do not match");
         }
-        const newUser= new User({email,username});
+        const newUser= new User({username,email,fullName});
         console.log(newUser);
         let result=await User.register(newUser,password);
         console.log(result);
@@ -53,4 +53,24 @@ module.exports.logout=(req,res,next)=>{
         req.flash("success","Logged out successfully");
         res.redirect("/listings");
     });
+}
+
+module.exports.getProfile=async (req, res) => {
+    const { id } = req.params;
+    
+    // Fetch the user by ID and populate the bookings
+    const user = await User.findById(id).populate({
+            path: 'bookings',
+            populate: {
+                path: 'listing',
+            }
+        });
+    
+    if (!user) {
+        req.flash("error", "User not found.");
+        return res.redirect("/listings");
+    }
+    
+    // Render the profile page with the user data
+    res.render("user/profile", { user });
 }

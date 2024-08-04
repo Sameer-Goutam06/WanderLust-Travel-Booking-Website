@@ -6,7 +6,8 @@ const wrapAsync = require('../utilities/Errors/wrapAsync.js');
 const ExpressError = require('../utilities/Errors/ExpressError.js');
 // Require model created in models folder
 const Listing = require('../models/listing.js');
-const {isLoggedIn,isOwner,validateSchema}=require("../middleware.js");
+const {isLoggedIn,isAdmin,isOwner,validateSchema}=require("../middleware.js");
+//call back methods from controllers
 const{getListings,
     getNewListings,
     postNewListings,
@@ -15,18 +16,13 @@ const{getListings,
     putEditListings,
     deleteListings}=require("../controllers/listingController.js");
 
-
-//path to export methods
-
 // Listings route - list of all available destinations
 router.get('/', wrapAsync(getListings));
 
 // Create a new stay destination
 router.route("/new")
-    .get(isLoggedIn, getNewListings)
-    .post(isLoggedIn, validateSchema, wrapAsync(postNewListings));// Acquire the details of stay place
-
-
+    .get(isLoggedIn,isAdmin,getNewListings)
+    .post(isLoggedIn,isAdmin,validateSchema, wrapAsync(postNewListings));// Acquire the details of stay place
 
 // See the details of a destination in detail using object id and anchor tags
 router.get('/:id',wrapAsync(getListingsById));

@@ -4,8 +4,8 @@ const Review = require('./models/review.js');
 const wrapAsync = require('./utilities/Errors/wrapAsync');
 const ExpressError = require('./utilities/Errors/ExpressError');
 //Acquiring joi schema
-const { ListingSchema ,ReviewSchema} = require("./schema.js");
-
+const { ListingSchema ,ReviewSchema,bookingSchema} = require("./schema.js");
+const Booking=require("./models/bookings.js")
 
 //writing the server side validation schema for post methods like create and edit route
 //using Joi we are creating a seperate function which checks for error objects inside result object
@@ -35,6 +35,20 @@ module.exports.validateReview = (req, res, next) => {
         next();
     }
 };
+
+//validate booking schema
+module.exports.validateBooking=(req,res,next)=>{
+    const { id } = req.params;
+    const { name, count, date } = req.body;   
+    // Validate input data using joi schema
+    const { error } = bookingSchema.validate({ name, count, date });
+    if (error) {
+        throw new ExpressError(404, `Validation error: ${error.details[0].message}`);
+    }
+    else{
+        next();
+    }
+}
 
 //passport login check middleware
 module.exports.isLoggedIn=(req,res,next)=>{
@@ -76,8 +90,45 @@ module.exports.isReviewAuthor=async(req,res,next)=>{
     let review=await Review.findById(rid);
     if(!(review.author._id).equals(res.locals.currentUser._id))
     {
-            req.flash("error","You are not authorized to delete the reviews of other users");
-            return res.redirect(`/listings/${id}`);
+        req.flash("error","You are not authorized to delete the reviews of other users");
+        return res.redirect(`/listings/${id}`);
+    }
+    next();
+}
+
+//to ensure that new listings can only be added by admin
+module.exports.isAdmin =(req, res, next) => {
+    const Admin = "Admin";
+    if (req.user.username !== Admin) {
+        req.flash("error", "Only Admin is authorized to create new stays");
+        return res.redirect(`/listings`);
+    }
+    next();
+};
+
+module.exports.isSameUser=async(req,res,next)=>{
+    const {bookingId}=req.params;
+    const booking = await Booking.findById(bookingId).populate('user');
+    if (!booking) {
+        req.flash('error', 'Booking not found.');
+        return res.redirect('/listings');
+    }
+    const bookedUser=booking.user;
+    if(booking.user._id.toString() !== res.locals.currentUser._id.toString() && req.user.username !== "Admin")
+    {
+        req.flash("error","You are not authorized to view the booking details of other users");
+        return res.redirect(`/listings`);
+    }
+    next();
+}
+
+module.exports.isUser=(req,res,next)=>
+{
+    const {id}=req.params;
+    if(!req.user || id.toString() !== req.user._id.toString())
+    {
+        req.flash("error","You are not authorized to view profile of other users");
+        return res.redirect(`/listings`);
     }
     next();
 }

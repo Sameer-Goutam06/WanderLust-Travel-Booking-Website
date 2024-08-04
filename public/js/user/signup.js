@@ -3,6 +3,7 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
 
     const username = document.getElementById('username');
     const email = document.getElementById('email');
+    const fullName = document.getElementById('fullName');
     const password = document.getElementById('password');
     const confirmPassword = document.getElementById('confirmPassword');
     let valid = true;
@@ -20,6 +21,13 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
     // Validate email
     if (email.value.trim() === '') {
         showError(email, 'Email is required.');
+        valid = false;
+    }
+
+    // Validate full name
+    const fullNameRegex = /^[a-zA-Z\s]+$/;
+    if (!fullNameRegex.test(fullName.value.trim())) {
+        showError(fullName, 'Name must contain only alphabets and spaces.');
         valid = false;
     }
 

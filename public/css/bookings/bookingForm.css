@@ -1,0 +1,95 @@
+/* Apply the same styles as the reference form to ensure consistency */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden; /* Prevent horizontal overflow */
+}
+
+body {
+    background-color: #f0f0f0;
+}
+
+.form-container {
+    max-width: 850px;
+    width: 90%; /* Ensure the container is responsive */
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Raleway', sans-serif;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-family: 'Raleway', sans-serif;
+}
+
+small {
+    display: block;
+    margin-top: 5px;
+    color: #777;
+}
+
+button {
+    display: block;
+    width: fit-content;
+    padding: 10px 15px;
+    background-color: rgb(29, 28, 28);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'Raleway', sans-serif;
+    margin: 0 auto;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.invalid-feedback {
+    color: red;
+    display: none;
+    font-family: 'Raleway', sans-serif;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .form-container {
+        padding: 10px;
+    }
+
+    button {
+        width: 100%;
+    }
+}
