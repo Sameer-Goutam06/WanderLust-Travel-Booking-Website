@@ -6,10 +6,10 @@
 <body>
     <h1 class="text-center my-4">Create New Stay</h1>
     <div class="container">
-        <form action="/listings/new" method="post" class="needs-validation" novalidate>
+        <form action="/listings/new" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
-                <input type="text" id="title" name="listing[title]" class="form-control" placeholder="Enter title" required value="">
+                <input type="text" id="title" name="listing[title]" class="form-control" placeholder="Enter title" required >
                 <div class="invalid-feedback">
                     Please provide a title less than 50 characters.
                 </div>
@@ -21,9 +21,9 @@
             </div>
             <div class="mb-3">
                 <label for="image-url" class="form-label">Image URL</label>
-                <input type="url" id="image-url" name="listing[image][url]" class="form-control" placeholder="Enter image URL" required>
+                <input type="file" id="image-url" name="listing[image][url]" class="form-control" placeholder="Enter image URL" required>
                 <div class="invalid-feedback">
-                    Please provide a valid URL.
+                    Please provide a valid file.
                 </div>
             </div>
             <div class="mb-3">

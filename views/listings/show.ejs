@@ -60,7 +60,7 @@
             <% if (result.reviews.length > 0) { %>
                 <% result.reviews.forEach(review => { %>
                     <div class="review">
-                        <h6> <%= review.author.username %></h6>
+                        <h6> <%= review.author.fullName %></h6>
                         <p style="display: inline;"><b>Rating:</b> 
                         <% for( let index = 0; index <review.rating; index++ ) { %>
                             <p style="display: inline;">&#9733;</p>
