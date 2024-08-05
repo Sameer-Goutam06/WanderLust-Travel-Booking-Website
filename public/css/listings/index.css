@@ -2,7 +2,8 @@
 .list {
     height: fit-content;
     font-size: 2rem;
-    padding: 1rem 1.75rem;
+    padding: 0.5rem 1.75rem;
+    padding-top: 1rem;
     font-family: 'Poppins', sans-serif;
 }
 
@@ -22,7 +23,7 @@
     height: fit-content;
     padding: 0.5rem 1rem;
     border-radius: 10px;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     font-family: 'Poppins', sans-serif;
 }
 

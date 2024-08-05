@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV !=="production")
+{
+    require('dotenv').config()
+}
 //admin user id and password {Admin, admin@gmail.com, admin@123}
 const express = require('express');
 const app = express();
@@ -19,6 +23,10 @@ const Review = require("./models/review.js");
 //acquiring passport modules for authentication and authorization
 const passport=require("passport")
 const LocalStrategy=require("passport-local")
+//acquiring multer for image uploads
+const multer  = require('multer');
+const upload = multer({ dest: 'uploads/' });
+
 
 // Setting Up Things.....
 

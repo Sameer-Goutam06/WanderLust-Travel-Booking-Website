@@ -3,7 +3,7 @@
 <body>
     <div class="form-container">
         <h1>Edit Data about Stay <%= result.title %></h1>
-        <form method="post" action="/listings/<%= result._id %>/edit?_method=PUT" novalidate class="needs-validation">
+        <form method="post" action="/listings/<%= result._id %>/edit?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">Title</label>
                 <input type="text" id="title" name="listing[title]" placeholder="Enter title" value="<%= result.title %>" required>
@@ -14,9 +14,17 @@
                 <textarea id="description" name="listing[description]" placeholder="Enter description" required><%= result.description %></textarea>
                 <div class="invalid-feedback">Description length should be in the range of 50-500 characters</div>
             </div>
-            <div class="form-group">
-                <label for="image-url">Image URL</label>
-                <input type="url" id="image-url" name="listing[image][url]" placeholder="Enter image URL" value="<%= result.image.url %>" required>
+            <div class="image-preview">
+                <% if (result.image && result.image.url) { %>
+                    <img src="<%= result.image.url %>" alt="Image Preview">
+                <% } %>
+            </div>
+            <div class="mb-3">
+                <label for="image-url" class="form-label">Image URL</label>
+                <input type="file" id="image-url" name="listing[image]" class="form-control" placeholder="Enter image URL" required value="<%= result.image %>">
+                <div class="invalid-feedback">
+                    Please provide a valid file and ensure that you are not providing the same image again
+                </div>
             </div>
             <div class="form-group">
                 <label for="price">Price in ₹</label>

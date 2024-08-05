@@ -54,3 +54,15 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+.image-preview {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.image-preview img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

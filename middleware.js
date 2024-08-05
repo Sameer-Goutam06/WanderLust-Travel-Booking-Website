@@ -13,7 +13,7 @@ const Booking=require("./models/bookings.js")
 //it is important to validate data on server side because we need to be aware of hoppscotch and postman api testers 
 ///we need to create a robust and secure api
 // Server-side validation schema for POST methods
-module.exports.validateSchema = (req, res, next) => {
+module.exports.validateListing = (req, res, next) => {
     let { error } = ListingSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',');
@@ -77,7 +77,7 @@ module.exports.saveRedirectUrl=(req,res,next)=>{
 module.exports.isOwner=async(req,res,next)=>{
     const { id } = req.params;
     const listingDetails=await Listing.findById(id);
-    if(!(res.locals.currentUser._id).equals(listingDetails.owner._id))
+    if(req.user.username !== "Admin")
     {
         req.flash("error","You are not authorized to edit the details of a destination");
         return res.redirect(`/listings/${id}`);
