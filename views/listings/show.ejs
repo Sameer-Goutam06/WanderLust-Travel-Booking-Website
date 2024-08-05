@@ -12,7 +12,7 @@
             <li><p style="font-weight: 600;">Location</p><p><%= result.location %></p></li>
             <li><p style="font-weight: 600;">Country</p><%= result.country %></p></li>
         </ul>
-        <% if (currentUser && ((currentUser._id).equals(result.owner._id))) { %>
+        <% if (currentUser && ((currentUser._id).equals(result.owner._id)||(currentUser.username.toString()==="Admin"))) { %>
             <div class="buttons">
                 <button class="edit" onclick="window.location.href='/listings/<%= result._id %>/edit'">Edit data</button>
                 <form method="post" action="/listings/<%= result._id %>/delete?_method=DELETE" style="display: inline;">
@@ -53,7 +53,7 @@
                         <p><strong>Rating:</strong> <%= review.rating %>&#9733;</p>
                         <p><%= review.comment %></p>
                         <p><em>Posted on <%= new Date(review.createdAt).toLocaleDateString() %></em></p>
-                        <% if (currentUser && currentUser._id.equals(review.author._id)) { %>
+                        <% if (currentUser && (currentUser._id.equals(review.author._id)||(currentUser.username.toString()==="Admin"))) { %>
                             <form action="/listings/<%= result._id %>/reviews/<%= review._id %>/delete?_method=DELETE" method="post">
                                 <button type="submit" class="btn btn-sm btn-dark">DELETE Review</button>
                             </form>
