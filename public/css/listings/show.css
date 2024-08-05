@@ -56,11 +56,10 @@
 }
 
 .form {
-    padding-top: 15px;
+    padding-top: 25px;
     margin-top: 20px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
     border-top:2px solid rgb(61, 60, 60);
 }
 
@@ -96,6 +95,8 @@
 
 .reviews-container {
     margin-top: 20px;
+    border-top:2px solid rgb(61, 60, 60);
+    padding-top: 20px;
 }
 
 .review {
@@ -145,7 +146,6 @@
 
     .form {
         flex-direction: column;
-        gap: 10px;
     }
 
     .user-rating, .user-review {

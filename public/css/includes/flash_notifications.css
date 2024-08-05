@@ -15,7 +15,7 @@
     margin-top: 1rem;
     border-radius: 50px;
     animation: flash;
-    animation-duration: 4s;
+    animation-duration: 5s;
     animation-timing-function: linear;
     animation-iteration-count: 1;
 }
@@ -43,7 +43,8 @@
 @media (max-width:768px) {
     .flash-notifications
     {
-        padding: 1rem 1rem;
+        padding: 1rem 1.35rem;
         margin-top: 1rem;
+        font-size: 4vmin;
     }
 }
