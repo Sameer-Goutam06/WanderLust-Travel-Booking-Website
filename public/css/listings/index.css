@@ -3,17 +3,17 @@
     height: fit-content;
     font-size: 2rem;
     padding: 1rem 1.75rem;
-    padding-top: 0.5rem;
-    font-family: poppins;
+    font-family: 'Poppins', sans-serif;
 }
 
-.name
-{
+.name {
     height: fit-content;
     font-size: 1.4rem;
     padding: 1rem 1.75rem;
     padding-bottom: 0;
+    font-family: 'Poppins', sans-serif;
 }
+
 .create {
     margin: 0rem 1.75rem;
     border: none;
@@ -23,141 +23,67 @@
     padding: 0.5rem 1rem;
     border-radius: 10px;
     margin-bottom: 2rem;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Cards Container Styles */
 .cards-container {
     display: flex;
+    flex-wrap: wrap; /* Allows the cards to wrap onto new rows */
+    justify-content: center; /* Centers the cards horizontally */
+    gap: 20px; /* Adds space between cards */
+    padding: 20px; /* Adds padding inside the container */
+}
+
+.card {
+    flex: 1 1 250px; /* Flex-grow, flex-shrink, and flex-basis values */
+    max-width: 320px; /* Ensures a maximum width for larger screens */
+    min-width: 300px; /* Ensures a minimum width for smaller screens */
+    max-height: 400px; /* 1.5 times the max-width */
+    height: 50vh; /* Ensures the height scales with the width */
+    background-color:transparent; /* Example background color */
+    display: flex;
     flex-direction: column;
-    gap: 3rem;
-    padding: 0 1rem; /* Padding on mobile screens */
+    justify-content: center; /* Centers content horizontally */
+    text-align: left;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Adds shadow */
+    border-radius: 8px; /* Rounds the corners */
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+    overflow: hidden;
+    border: none;
 }
 
-/* Media query for large screens */
-@media (min-width: 768px) {
-    .cards-container {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-between; /* Adjust to space between cards */
-        padding: 0 2rem; /* Padding for larger screens */
-    }
-
-    .row {
-        display: flex;
-        flex-direction: row;
-        gap: 1.5rem;
-        width: 100%;
-        margin: 0; /* Remove margin for rows to align cards properly */
-    }
-
-    .card {
-        width: calc(25% - 1.5rem); /* Adjust width to fit 4 cards per row with gaps */
-        height: 22rem;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        background-color: transparent;
-        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
-        cursor: pointer;
-        gap: 1rem;
-        padding: 0;
-        border-radius: 15px;
-        border: none;
-        padding-bottom: 1rem;
-    }
-
-    .card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Hover effects */
-    }
-
-    .card-img-top {
-        width: 100%;
-        height: 220px; /* Fixed height for images */
-        object-fit: cover !important;
-        object-position: center;
-        border-radius: 15px;
-    }
-
-    .card-body {
-        height: 6rem; /* Adjust height to fit within the card body */
-        padding: 0.5rem;
-        padding-top: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding-bottom: 1rem;
-    }
-
-    .card-title {
-        font-size: 1.25rem;
-        height: auto; /* Allow title to adjust height */
-    }
-
-    .card-text {
-        font-size: 1rem;
-        color: #333;
-        display: flex;
-        justify-content: flex-start;
-    }
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Hover effects */
 }
 
-/* Media query for mobile screens */
-@media (max-width: 767px) {
-    .row {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem; /* Space between rows on mobile */
-    }
-
-    .card {
-        width: 100%;
-        margin-bottom: 1.5rem;
-        border: none;
-    }
-
-    .card-img-top {
-        height: 15rem; 
-        border-radius: 15px; /* Fixed height for images on mobile */
-    }
-
-    .card-body {
-        height: auto; /* Adjust height for card body on mobile */
-    }
+.card-img-top {
+    width: 100%;
+    height: 65%; /* Adjust height to fit within the card */
+    object-fit: cover !important;
+    object-position: center;
+    border-radius: 8px 8px 0 0;
 }
 
-/* css for flash message */
-/* CSS for Flash Message */
-.flash-message {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #4caf50; /* Green for success */
-    color: white;
-    padding: 1rem 2rem;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    opacity: 1;
-    transition: opacity 0.5s ease;
-    z-index: 1000;
+.card-body {
+    height: fit-content; /* Adjust height to fit within the card body */
+    padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: transparent;
 }
 
-/* Media query for tablets */
-@media (max-width: 768px) {
-    .flash-message {
-        top: 10px;
-        right: 10px;
-        padding: 0.75rem 1.5rem;
-        font-size: 0.9rem;
-    }
+.card-title {
+    font-size: 1.25rem;
+    height: auto; /* Allow title to adjust height */
 }
 
-/* Media query for mobile phones */
-@media (max-width: 480px) {
-    .flash-message {
-        top: 5px;
-        right: 5px;
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
-    }
+.card-text {
+    font-size: 1rem;
+    color: #333;
+    display: flex;
+    justify-content: flex-start;
 }
