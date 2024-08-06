@@ -1,16 +1,65 @@
-<% layout('layouts/boilerplate') %>
+<%- layout('layouts/boilerplate') %>
 <link rel="stylesheet" href="/css/listings/index.css">
 <body>
     <% if (currentUser) { %>
-        <h1 class="name">Welcome Back, <%= currentUser.fullName %></h1>
+        <h1 class="name">Welcome, <%= currentUser.fullName %></h1>
     <% } %>
-    <h1 class="list">Resorts and Stays</h1>
     <% if (currentUser && (currentUser.username.toString() === "Admin")) { %>
         <button class="create" onclick="window.location.href='/listings/new'">Create new Stay</button>
     <% } %>
+    <form action="/listings/apply-filters" method="post">
+        <div id="container">
+            <div id="filters-container">
+                <h5>Categories</h5>
+                <div class="scroll-icon left">
+                    <i class="fa-solid fa-circle-chevron-left"></i>
+                </div>
+                <div id="filters">
+                    <% categories.forEach(category => { %>
+                        <div class="filter">
+                            <label>
+                                <input type="checkbox" name="categories" value="<%= category._id %>" class="filter-checkbox" <%= selectedCategories.includes(category._id.toString()) ? 'checked' : '' %>>
+                                <div class="filter-content">
+                                    <i class="fa <%= category.icon %>"></i>
+                                    <p><%= category.name %></p>
+                                </div>
+                            </label>
+                        </div>
+                    <% }); %>
+                </div>
+                <div class="scroll-icon right">
+                    <i class="fa-solid fa-circle-chevron-right"></i>
+                </div>
+            </div>
+            <div id="taxation">
+                <label>
+                    <input type="checkbox" name="taxation" id="tax-checkbox" <%= applyTaxation ? 'checked' : '' %>>
+                    <div class="filter">
+                        <div class="filter-content">
+                            <i class="fa-solid fa-dollar-sign"></i>
+                            <p>Include Taxes</p>
+                        </div>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Conditionally render buttons based on route -->
+            <% if (isApplyFiltersPage) { %>
+                <div class="apply-filters">
+                    <button type="submit" id="apply-filters-button">Apply Filters</button>&nbsp;&nbsp;
+                    <button type="button" id="apply-filters-button" onclick="window.location.href='/listings'">Clear Filters</button>
+                </div>
+            <% } else { %>
+                <div class="apply-filters">
+                    <button type="submit" id="apply-filters-button">Apply Filters</button>
+                </div>
+            <% } %>
+        </div>
+    </form>  
+    <h1 class="list">Resorts and Stays</h1>    
     <div class="cards-container">
         <% l.forEach(item => { %>
-            <div class="card" onclick="window.location.href='/listings/<%=item._id%>'">
+            <div class="card" onclick="window.location.href='/listings/<%= item._id %>'">
                 <% if (item.image && item.image.url) { %>
                     <img src="<%= item.image.url %>" class="card-img-top" alt="destination" onerror='this.src="https://cff2.earth.com/uploads/2017/09/31200356/Nature-imagery-has-a-calming-effects-on-prisoners-850x500.jpg"'>
                 <% } else { %>
@@ -21,10 +70,12 @@
                     <p class="card-text">
                         <%= item.country %>
                         <br>
-                        ₹<%= item.price %>/night
+                        $<%= item.price %> /night
                     </p>
                 </div>
             </div>
         <% }); %>
-    </div>    
+    </div>       
+    <script src="/js/listings/index.js"></script> 
 </body>
+</html>

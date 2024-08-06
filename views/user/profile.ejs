@@ -17,15 +17,22 @@
             </div>
         </div>
         <div class="bookings-container">
-            <h2>Booking Summary (<%= user.bookings.length %>)</h2>
-            <% user.bookings.forEach((booking) => { %>
-                <div class="booking-card">
-                    <h3><%= booking.listing.title %></h3>
-                    <p><strong>Date:</strong> <%= booking.date.bookedOnDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
-                    <p><strong>Visitor:</strong> <%= booking.name%></p>
-                    <a href="/bookings/bookingSummary/<%= booking.id %>" class="btn">View Booking Summary</a>
-                </div>
-            <% }) %>
+            <% if (user.bookings.length>0) { %>
+                <% user.bookings.forEach((booking) => { %>
+                    <div class="booking-card">
+                        <% if (booking.listing) { %>
+                            <h3><%= booking.listing.title %></h3>
+                            <p><strong>Date:</strong> <%= booking.date.bookedOnDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                            <p><strong>Visitor:</strong> <%= booking.name %></p>
+                            <a href="/bookings/bookingSummary/<%= booking._id %>" class="btn">View Booking Summary</a>
+                        <% } else { %>
+                            <h4>The stay you have been booked previously might have been deleted. so it is not getting displayed.</h4>
+                        <% } %>
+                    </div>
+                <% }) %>                
+            <% } else {%>
+                <h2>You don't have any bookings yet</h2>
+            <% } %>
         </div>
     </div>
 </body>

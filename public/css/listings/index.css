@@ -4,6 +4,7 @@
     font-size: 2rem;
     padding: 0.5rem 1.75rem;
     padding-top: 1rem;
+    font-weight: 400;
     font-family: 'Poppins', sans-serif;
 }
 
@@ -11,8 +12,10 @@
     height: fit-content;
     font-size: 1.4rem;
     padding: 1rem 1.75rem;
+    margin-top: 0.75rem;
     padding-bottom: 0;
     font-family: 'Poppins', sans-serif;
+    margin-bottom: 1.5rem;
 }
 
 .create {
@@ -22,7 +25,7 @@
     color: white;
     height: fit-content;
     padding: 0.5rem 1rem;
-    border-radius: 10px;
+    border-radius: 5px;
     margin-bottom: 1rem;
     font-family: 'Poppins', sans-serif;
 }
@@ -87,4 +90,148 @@
     color: #333;
     display: flex;
     justify-content: flex-start;
+}
+
+#container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 4vmin 6vmin;
+}
+
+#filters-container {
+    width: 70%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding:0 6vmin;
+}
+
+#filters-container h5 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#filters {
+    display: flex;
+    overflow-x: auto;
+    flex-grow: 1;
+}
+
+#filters::-webkit-scrollbar {
+    display: none;
+}
+
+.filter {
+    margin: 0 10px;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.filter-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    padding-top: 15px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.filter-checkbox {
+    display: none;
+}
+
+.filter-checkbox:checked + .filter-content {
+    background-color: black;
+    color: white;
+    border-radius: 50%;
+}
+
+.scroll-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    font-size: 17px;
+    cursor: pointer;
+    z-index: 1;
+    padding: 10px;
+}
+
+.scroll-icon.left {
+    left: 0;
+}
+
+.scroll-icon.right {
+    right: 0;
+}
+
+#taxation {
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 4vmin;
+}
+
+#tax-checkbox {
+    display: none;
+}
+
+#tax-checkbox:checked + .filter .filter-content {
+    background-color: black;
+    color: white;
+    border-radius: 50%;
+}
+
+.apply-filters {
+    width: 15%;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    padding: 1rem 0;
+}
+
+#apply-filters-button {
+    width: 100;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+@media (max-width: 950px) {
+    #container {
+        flex-direction: column;
+    }
+
+    #filters-container {
+        width: 100%;
+    }
+
+    #filters {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        width: 100%;
+    }
+
+    #taxation, .apply-filters {
+        width: 100%;
+        margin-top: 20px;
+        justify-content: center;
+    }
+
+    #apply-filters-button {
+        width: 100%;
+    }
 }

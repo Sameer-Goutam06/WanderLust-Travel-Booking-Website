@@ -9,6 +9,8 @@ const Listing = require('../models/listing.js');
 const {isLoggedIn,isAdmin,isOwner,validateListing}=require("../middleware.js");
 //call back methods from controllers
 const{getListings,
+    getFilteredListings,
+    getSearchedListings,
     getNewListings,
     addImageToListing,
     checkAndUpdateImage,
@@ -26,10 +28,11 @@ const upload = multer({ storage:listingStorage });
 
 // Listings route - list of all available destinations
 router.get('/', wrapAsync(getListings));
-
+router.post("/apply-filters",wrapAsync(getFilteredListings));
+router.get("/search",getSearchedListings);
 // Create a new stay destination
 router.route("/new")
-    .get(isLoggedIn,isAdmin,getNewListings)
+    .get(isLoggedIn,isAdmin,wrapAsync(getNewListings))
     .post(isLoggedIn,isAdmin,upload.single("listing[image]"),wrapAsync(addImageToListing),validateListing, wrapAsync(postNewListings));// Acquire the details of stay place
 
 // See the details of a destination in detail using object id and anchor tags

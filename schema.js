@@ -13,6 +13,7 @@ const ListingSchema = Joi.object({
             filename: Joi.string().default('default-image.jpg'),
             url: Joi.string().default('https://cff2.earth.com/uploads/2017/09/31200356/Nature-imagery-has-a-calming-effects-on-prisoners-850x500.jpg')
         }).optional(),
+        categories: Joi.array().items(Joi.string()).required()
     }).required(),
 });
 

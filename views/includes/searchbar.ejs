@@ -1,0 +1,45 @@
+<form action="/listings/search" method="get" class="search-form">
+    <input type="text" name="query" placeholder="Search listings..." aria-label="Search for listings" required>
+    <button type="submit">Search</button>
+</form>
+<style>
+/* Search Form Styles */
+.search-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin:20px;
+}
+
+/* Default styles for search form */
+.search-form input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.search-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgb(252, 24, 24);
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.search-form button:hover {
+    background-color: #da3737;
+}
+
+/* Media Query for hiding search form on larger screens */
+@media (min-width: 950px) {
+    .search-form {
+        display: none;
+    }
+}
+</style>

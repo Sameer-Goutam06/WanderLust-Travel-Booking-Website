@@ -2,25 +2,86 @@ const wrapAsync = require('../utilities/Errors/wrapAsync.js');
 const ExpressError = require('../utilities/Errors/ExpressError.js');
 // Require model created in models folder
 const Listing = require('../models/listing.js');
+const Category=require("../models/category.js");
+
+
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('cloudinary').v2;
 
 module.exports.getListings=async (req, res) => {
-    const l = await Listing.find();
-    if (!l) {
-        throw new ExpressError(404, "DB not working");
-    }
-    res.render('listings/index', { l });
+        // Fetch all categories
+        const categories = await Category.find();
+    
+        // Fetch all listings by default
+        let listings = await Listing.find();
+        
+        // Render the view with all listings and categories
+        res.render('listings/index', {
+            l: listings,
+            categories: categories,
+            selectedCategories: [], // No filters applied
+            applyTaxation: false,
+            isApplyFiltersPage: false
+        });
 }
 
-module.exports.getNewListings=(req, res) => {
+module.exports.getFilteredListings=async (req, res) => {
+    const selectedCategories = req.body.categories || []; // `categories` will be an array of selected category IDs
+    const applyTaxation = req.body.taxation === 'true'; // Convert the checkbox value to boolean
+    // Redirect to /listings if no categories are selected and taxation is not checked
+    if (selectedCategories.length === 0 && !applyTaxation) {
+        return res.redirect('/listings');
+    }
+    // Build query based on selected filters
+    const query = selectedCategories.length > 0 ? { categories: { $in: selectedCategories } } : {};
+    // Find listings that match the selected filters
+    let listings = await Listing.find(query);
+    // Apply taxation if checkbox is checked
+    if (applyTaxation) {
+        listings = listings.map(listing => {
+            return {
+                ...listing._doc, // Preserve original listing data
+                price: (listing.price * (res.locals.taxationRate || 1)).toFixed(2) // Apply taxation rate to price
+            };
+        });
+    }
+    // Fetch all categories for the filter form
+    const categories = await Category.find();
+    // Render the filtered view
+    res.render('listings/index', {
+        l: listings,
+        categories: categories,
+        selectedCategories: selectedCategories,
+        applyTaxation: applyTaxation,
+        isApplyFiltersPage: true // Indicate that we are on the Apply Filters page
+    });
+}
+
+module.exports.getSearchedListings=async (req, res) => {
+    const searchQuery = req.query.query || '';
+    const regex = new RegExp(searchQuery, 'i');
+    const listings = await Listing.find({
+        $or: [
+            { title: new RegExp(searchQuery, 'i') },
+            { country: new RegExp(searchQuery, 'i') },
+            { location: new RegExp(searchQuery, 'i') }
+        ]
+    });
+    res.render('listings/search', {
+        l: listings,
+        searchQuery: searchQuery
+    });
+}
+
+module.exports.getNewListings=async(req, res) => {
     console.log(res.locals.currentUser.username);
     if(((res.locals.currentUser.username)!=="Admin"))
     {
         throw new ExpressError(404,"Only the developer of this website is authorized to create a new listing");
     }
-    res.render('listings/new');
+    const categories = await Category.find({});
+    res.render('listings/new', { categories });
 }
 
 module.exports.addImageToListing = async(req, res, next) => {
@@ -66,7 +127,8 @@ module.exports.getListingsById=async (req, res) => {
 module.exports.getEditListings=async (req, res) => {
     const { id } = req.params;
     const result = await Listing.findById(id);
-    res.render('listings/edit', { result });
+    const categories = await Category.find({});
+    res.render('listings/edit', { result, categories });
 }
 
 module.exports.checkAndUpdateImage=(req, res, next)=> {

@@ -47,6 +47,16 @@
                     Please provide a country.
                 </div>
             </div>
+            <div class="mb-3">
+                    <label>Categories:</label>
+                    <% categories.forEach(category => { %>
+                        <div>
+                            <input type="checkbox" id="category-<%= category._id %>" name="listing[categories][]" value="<%= category._id %>">
+                            <label for="category-<%= category._id %>"><%= category.name %></label>
+                        </div>
+                    <% }); %>
+                    <a href="/listings/create-filters">Add a new category</a>
+            </div>
             <button type="submit" class="btn btn-primary" style="background-color: rgb(29, 28, 28); border: none;">Add</button>
         </form>
     </div>
