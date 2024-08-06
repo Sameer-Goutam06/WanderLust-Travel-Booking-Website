@@ -11,6 +11,11 @@ html, body {
     overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
+.search-form
+{
+    display: none;
+}
+
 body {
     background-color: #f0f0f0;
 }

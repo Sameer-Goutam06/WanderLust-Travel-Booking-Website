@@ -11,6 +11,11 @@ h1 {
     font-family: 'Raleway', sans-serif;
 }
 
+.search-form
+{
+    display: none;
+}
+
 .form-group {
     margin-bottom: 15px;
 }
