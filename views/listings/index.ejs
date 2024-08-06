@@ -1,12 +1,6 @@
 <%- layout('layouts/boilerplate') %>
 <link rel="stylesheet" href="/css/listings/index.css">
 <body>
-    <% if (currentUser) { %>
-        <h1 class="name">Welcome, <%= currentUser.fullName %></h1>
-    <% } %>
-    <% if (currentUser && (currentUser.username.toString() === "Admin")) { %>
-        <button class="create" onclick="window.location.href='/listings/new'">Create new Stay</button>
-    <% } %>
     <form action="/listings/apply-filters" method="post">
         <div id="container">
             <div id="filters-container">
@@ -42,7 +36,6 @@
                     </div>
                 </label>
             </div>
-
             <!-- Conditionally render buttons based on route -->
             <% if (isApplyFiltersPage) { %>
                 <div class="apply-filters">
@@ -56,6 +49,12 @@
             <% } %>
         </div>
     </form>  
+    <% if (currentUser) { %>
+        <h1 class="name">Welcome, <%= currentUser.fullName %></h1>
+    <% } %>
+    <% if (currentUser && (currentUser.username.toString() === "Admin")) { %>
+        <button class="create" onclick="window.location.href='/listings/new'">Create new Stay</button>
+    <% } %>
     <h1 class="list">Resorts and Stays</h1>    
     <div class="cards-container">
         <% l.forEach(item => { %>
