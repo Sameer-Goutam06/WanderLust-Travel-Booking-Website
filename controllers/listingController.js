@@ -29,6 +29,7 @@ module.exports.getListings=async (req, res) => {
 module.exports.getFilteredListings=async (req, res) => {
     const selectedCategories = req.body.categories || []; // `categories` will be an array of selected category IDs
     const applyTaxation = req.body.taxation === 'true'; // Convert the checkbox value to boolean
+    console.log('Apply Taxation:', applyTaxation);
     // Redirect to /listings if no categories are selected and taxation is not checked
     if (selectedCategories.length === 0 && !applyTaxation) {
         return res.redirect('/listings');
@@ -42,7 +43,7 @@ module.exports.getFilteredListings=async (req, res) => {
         listings = listings.map(listing => {
             return {
                 ...listing._doc, // Preserve original listing data
-                price: (listing.price * (res.locals.taxationRate || 1)).toFixed(2) // Apply taxation rate to price
+                price: (listing.price+(listing.price*(res.locals.taxationRate/100))).toFixed(2) // Apply taxation rate to price
             };
         });
     }

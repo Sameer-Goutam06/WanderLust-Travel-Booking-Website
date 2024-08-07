@@ -27,14 +27,14 @@
             </div>
             <div id="taxation">
                 <label>
-                    <input type="checkbox" name="taxation" id="tax-checkbox" <%= applyTaxation ? 'checked' : '' %>>
+                    <input type="checkbox" name="taxation" id="tax-checkbox" value="true" <%= applyTaxation ? 'checked' : '' %>>
                     <div class="filter">
                         <div class="filter-content">
                             <i class="fa-solid fa-dollar-sign"></i>
                             <p>Include Taxes</p>
                         </div>
                     </div>
-                </label>
+                </label>                
             </div>
             <!-- Conditionally render buttons based on route -->
             <% if (isApplyFiltersPage) { %>
