@@ -3,24 +3,28 @@
 <body>
     <h1 class="list">Search Results</h1>    
     <div class="cards-container">
-        <% l.forEach(item => { %>
-            <div class="card" onclick="window.location.href='/listings/<%= item._id %>'">
-                <% if (item.image && item.image.url) { %>
-                    <img src="<%= item.image.url %>" class="card-img-top" alt="destination">
-                <% } else { %>
-                    <img src="https://example.com/default-image.jpg" class="card-img-top" alt="default image">
-                <% } %>
-                <div class="card-body">
-                    <h5 class="card-title"><%= item.title %></h5>
-                    <p class="card-text">
-                        <%= item.country %>
-                        <br>
-                        $<%= item.price %> /night
-                    </p>
+        <% if (l) { %>
+            <% l.forEach(item => { %>
+                <div class="card" onclick="window.location.href='/listings/<%= item._id %>'">
+                    <% if (item.image && item.image.url) { %>
+                        <img src="<%= item.image.url %>" class="card-img-top" alt="destination">
+                    <% } else { %>
+                        <img src="https://example.com/default-image.jpg" class="card-img-top" alt="default image">
+                    <% } %>
+                    <div class="card-body">
+                        <h5 class="card-title"><%= item.title %></h5>
+                        <p class="card-text">
+                            <%= item.country %>
+                            <br>
+                            $<%= item.price %> /night
+                        </p>
+                    </div>
                 </div>
-            </div>
-        <% }); %>
-    </div>
+            <% }); %>
+        </div>
+        <% } else { %>
+            <h4>Sorry, your search doesn't match with our data</h4>
+        <% } %>
     <script src="/js/listings/search.js"></script>
 </body>
 </html>
