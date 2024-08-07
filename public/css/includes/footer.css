@@ -25,6 +25,7 @@ footer .f-info-socials h5
     cursor: pointer;
 }
 footer .brand {
+    font-family: Raleway;
     text-align: center;
     width: 100%;
 }
