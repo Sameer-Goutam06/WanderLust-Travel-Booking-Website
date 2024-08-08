@@ -24,8 +24,8 @@ const Review = require("./models/review.js");
 const passport=require("passport")
 const LocalStrategy=require("passport-local")
 //acquiring multer for image uploads
-const multer  = require('multer');
-const upload = multer({ dest: 'uploads/' });
+
+const dbUrl=process.env.ATLAS_DB_URL;
 
 
 // Setting Up Things.....
@@ -44,7 +44,7 @@ app.use(methodOverride('_method'));
 
 // Connect to MongoDB
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/WanderLust');
+    await mongoose.connect(dbUrl);
 }
 main()
     .then(() => console.log('Connected to MongoDB'))
