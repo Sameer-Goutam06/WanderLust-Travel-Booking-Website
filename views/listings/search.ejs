@@ -3,7 +3,7 @@
 <body>
     <h1 class="list">Search Results</h1>    
     <div class="cards-container">
-        <% if (l) { %>
+        <% if (l && l.length > 0) { %>
             <% l.forEach(item => { %>
                 <div class="card" onclick="window.location.href='/listings/<%= item._id %>'">
                     <% if (item.image && item.image.url) { %>
