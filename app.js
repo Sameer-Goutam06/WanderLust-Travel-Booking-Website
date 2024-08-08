@@ -22,7 +22,7 @@ const Listing = require('./models/listing');
 const Review = require("./models/review.js");
 //acquiring passport modules for authentication and authorization
 const passport=require("passport")
-const LocalStrategy=require("passport-local")
+const { Strategy: LocalStrategy }=require("passport-local")
 //acquiring multer for image uploads
 
 const dbUrl=process.env.ATLAS_DB_URL;
@@ -47,7 +47,7 @@ async function main() {
     await mongoose.connect(dbUrl);
 }
 main()
-    .then(() => console.log('Connected to MongoDB'))
+    .then(() => console.log('Connected to MongoDB Atlas'))
     .catch(err => console.log(err));
 
 
